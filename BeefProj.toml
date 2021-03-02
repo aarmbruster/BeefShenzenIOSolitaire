@@ -1,0 +1,6 @@
+FileVersion = 1
+Dependencies = {corlib = "*", "Atma.Common" = "*", "Atma.Entities" = "*"}
+
+[Project]
+Name = "BeefShenzenIOSolitaire"
+StartupObject = "BeefShenzenIOSolitaire.Program"
