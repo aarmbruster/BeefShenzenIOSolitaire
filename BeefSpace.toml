@@ -1,8 +1,5 @@
 FileVersion = 1
-Projects = {BeefShenzenIOSolitaire = {Path = "."}, "Atma.Common" = {Path = "../../Source/Atma.Framework/src/Atma.Common"}, "Atma.Entities" = {Path = "../../Source/Atma.Framework/src/Atma.Entities"}, "Atma.Systems" = {Path = "../../Source/Atma.Framework/src/Atma.Systems"}}
+Projects = {BeefShenzenIOSolitaire = {Path = "."}, "Atma.Common" = {Path = "../../Source/Atma.Framework/src/Atma.Common"}, "Atma.Entities" = {Path = "../../Source/Atma.Framework/src/Atma.Entities"}}
 
 [Workspace]
 StartupProject = "BeefShenzenIOSolitaire"
-
-[Configs.Debug.Win64]
-ConfigSelections = {"Atma.Systems" = {Enabled = false}}

@@ -4,3 +4,6 @@ Dependencies = {corlib = "*", "Atma.Common" = "*", "Atma.Entities" = "*"}
 [Project]
 Name = "BeefShenzenIOSolitaire"
 StartupObject = "BeefShenzenIOSolitaire.Program"
+
+[Configs.Release.Win64]
+BeefLibType = "Dynamic"

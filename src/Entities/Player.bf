@@ -39,6 +39,11 @@ namespace BeefShenzenIOSolitaire.Entities
 		protected override void OnFixedUpdate()
 		{
 			input.Update(WorldPosition);
+
+			
+			
+			
+
 			//var aim = input.Aim;
 			//Console.WriteLine("X:{} Y:{}", aim.x, aim.y);
 		}

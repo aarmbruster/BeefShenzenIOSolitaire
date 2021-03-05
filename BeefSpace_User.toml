@@ -1,11 +1,11 @@
 FileVersion = 1
-LastConfig = "Debug"
+LastConfig = "Release"
 LastPlatform = "Win64"
-RecentFilesList = ["src\\BeefSolitaireGame.bf", "src\\Entities\\SpecialButton.bf", "src\\Entities\\Card.bf", "src\\Entities\\Player.bf", "src\\Entities\\Background.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf", "src\\Program.bf"]
+RecentFilesList = ["src\\Entities\\Card.bf", "src\\CardManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityCommandBuffer.bf", "src\\BeefShenzenIOSolitaire.bf", "Disassembly", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\System.bf", "src\\Entities\\SpecialCard.bf", "src\\Entities\\NumberCard.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf", "src\\Entities\\SpecialButton.bf", "src\\Entities\\Background.bf", "src\\Program.bf", "src\\Entities\\Player.bf", "src\\BeefSolitaireGame.bf"]
 
 [MainWindow]
-X = 572
-Y = 92
+X = -572
+Y = 633
 Width = 1189
 Height = 892
 ShowKind = "Maximized"
@@ -37,77 +37,144 @@ IsFillWidget = true
 Permanent = true
 RequestedWidth = 150.0
 RequestedHeight = 150.0
-SizePriority = 150.0
+SizePriority = 0.045565
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
 IsFillWidget = true
 RequestedWidth = 1654.0
 RequestedHeight = 627.0
-SizePriority = 1654.0
-DefaultDocumentsTabbedView = true
+SizePriority = 0.422167
 Type = "TabbedView"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "BeefSolitaireGame.bf"
-TabWidth = 161.0
-Type = "SourceViewPanel"
-FilePath = "src\\BeefSolitaireGame.bf"
-CursorPos = 93
-ProjectName = "BeefShenzenIOSolitaire"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "SpecialButton.bf"
-TabWidth = 133.0
-Type = "SourceViewPanel"
-FilePath = "src\\Entities\\SpecialButton.bf"
-CursorPos = 42
-ProjectName = "BeefShenzenIOSolitaire"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Card.bf"
-TabWidth = 83.0
-Type = "SourceViewPanel"
-FilePath = "src\\Entities\\Card.bf"
-CursorPos = 56
-ProjectName = "BeefShenzenIOSolitaire"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Background.bf"
-TabWidth = 124.0
-Type = "SourceViewPanel"
-FilePath = "src\\Entities\\Background.bf"
-CursorPos = 56
-ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "EntityManager.bf"
 TabWidth = 138.0
 Type = "SourceViewPanel"
 FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf"
-CursorPos = 4026
-ProjectName = "Atma.Systems"
+CursorPos = 4243
+VertPos = 2055.0
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Player.bf"
-TabWidth = 89.0
+TabLabel = "EntityCommandBuffer.bf"
+TabWidth = 179.0
 Type = "SourceViewPanel"
-FilePath = "src\\Entities\\Player.bf"
-CursorPos = 56
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityCommandBuffer.bf"
+CursorPos = 4114
+VertPos = 2445.0
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Release.bf"
+TabWidth = 100.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf"
+CursorPos = 1294
+VertPos = 570.0
+ProjectName = "Atma.Common"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "System.bf"
+TabWidth = 96.0
+Type = "SourceViewPanel"
+FilePath = "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\System.bf"
+CursorPos = 2583
+VertPos = 1860.0
+ProjectName = "corlib"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Disassembly"
+TabWidth = 112.0
+Type = "DisassemblyPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "SpecialCard.bf"
+TabWidth = 124.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\SpecialCard.bf"
+CursorPos = 140
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "NumberCard.bf"
+TabWidth = 121.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\NumberCard.bf"
+CursorPos = 146
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "BeefShenzenIOSolitaire.bf"
+TabWidth = 178.0
+Type = "SourceViewPanel"
+FilePath = "src\\BeefShenzenIOSolitaire.bf"
+CursorPos = 1098
+VertPos = 53.75
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
+TabLabel = "CardManager.bf"
+TabWidth = 125.0
+Type = "SourceViewPanel"
+FilePath = "src\\CardManager.bf"
+CursorPos = 2303
+VertPos = 980.4255
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "SpecialButton.bf"
+TabWidth = 123.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\SpecialButton.bf"
+CursorPos = 42
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Background.bf"
+TabWidth = 114.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\Background.bf"
+CursorPos = 56
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Player.bf"
+TabWidth = 79.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\Player.bf"
+CursorPos = 56
+VertPos = 369.0698
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "Program.bf"
-TabWidth = 106.0
+TabWidth = 96.0
 Type = "SourceViewPanel"
 FilePath = "src\\Program.bf"
-CursorPos = 215
+CursorPos = 167
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets]]
+IsFillWidget = true
+RequestedWidth = 1488.0
+RequestedHeight = 875.0
+SizePriority = 0.532268
+DefaultDocumentsTabbedView = true
+Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Card.bf"
+TabWidth = 73.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\Card.bf"
+CursorPos = 845
+VertPos = 182.5
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets]]
 RequestedWidth = 250.0
-RequestedHeight = 386.0
+RequestedHeight = 273.0
 Type = "DockingFrame"
 SplitType = 1
 
