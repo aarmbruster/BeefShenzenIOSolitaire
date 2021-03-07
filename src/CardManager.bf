@@ -113,7 +113,6 @@ namespace BeefShenzenIOSolitaire
 			{
 				cards.Add(new SpecialCard(spec_card));
 			}
-
 			
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
@@ -123,6 +122,7 @@ namespace BeefShenzenIOSolitaire
 				col.Add(card);
 				card.Depth = col.Count;
 				card.Position = float2(col_index * 152.0f + 106, 366.0f + col.Count * 36);
+				scene.RegisterCollision(card.collision);
 			}
 
 			num_cards.Clear();

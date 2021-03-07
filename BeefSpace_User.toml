@@ -1,11 +1,11 @@
 FileVersion = 1
 LastConfig = "Release"
 LastPlatform = "Win64"
-RecentFilesList = ["src\\Entities\\Card.bf", "src\\CardManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityCommandBuffer.bf", "src\\BeefShenzenIOSolitaire.bf", "Disassembly", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\System.bf", "src\\Entities\\SpecialCard.bf", "src\\Entities\\NumberCard.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf", "src\\Entities\\SpecialButton.bf", "src\\Entities\\Background.bf", "src\\Program.bf", "src\\Entities\\Player.bf", "src\\BeefSolitaireGame.bf"]
+RecentFilesList = ["src\\Entities\\InputManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Entity.bf", "src\\Entities\\Card.bf", "src\\Entities\\NumberCard.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\CollisionComponent.bf", "src\\BeefShenzenIOSolitaire.bf", "src\\CardManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\CameraComponent.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\GraphicsComponent.bf", "src\\Entities\\Entity.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\Sprite.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\Renderable.bf", "src\\Entities\\MouseInputManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Math\\aabb2.bf", "src\\Entities\\Player.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\DearImGui\\ImGui.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Input\\Buttons.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityCommandBuffer.bf"]
 
 [MainWindow]
-X = -572
-Y = 633
+X = 731
+Y = 158
 Width = 1189
 Height = 892
 ShowKind = "Maximized"
@@ -22,7 +22,7 @@ Type = "DockingFrame"
 SplitType = 1
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
-RequestedWidth = 291.0
+RequestedWidth = 297.0
 RequestedHeight = 200.0
 Type = "TabbedView"
 
@@ -44,51 +44,74 @@ Type = "TabbedView"
 IsFillWidget = true
 RequestedWidth = 1654.0
 RequestedHeight = 627.0
-SizePriority = 0.422167
+SizePriority = 0.4658477
+DefaultDocumentsTabbedView = true
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Entity.bf"
+TabWidth = 86.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Entity.bf"
+CursorPos = 3199
+VertPos = 2010.0
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "InputManager.bf"
+TabWidth = 126.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\InputManager.bf"
+CursorPos = 409
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "List.bf"
+TabWidth = 64.0
+Type = "SourceViewPanel"
+FilePath = "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf"
+CursorPos = 4743
+ProjectName = "corlib"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "EntityManager.bf"
-TabWidth = 138.0
+TabWidth = 128.0
 Type = "SourceViewPanel"
 FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityManager.bf"
 CursorPos = 4243
-VertPos = 2055.0
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "EntityCommandBuffer.bf"
-TabWidth = 179.0
+TabWidth = 169.0
 Type = "SourceViewPanel"
 FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Systems\\src\\EntityCommandBuffer.bf"
 CursorPos = 4114
-VertPos = 2445.0
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "Release.bf"
-TabWidth = 100.0
+TabWidth = 90.0
 Type = "SourceViewPanel"
 FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf"
 CursorPos = 1294
-VertPos = 570.0
 ProjectName = "Atma.Common"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "System.bf"
-TabWidth = 96.0
+TabWidth = 86.0
 Type = "SourceViewPanel"
 FilePath = "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\System.bf"
 CursorPos = 2583
-VertPos = 1860.0
 ProjectName = "corlib"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "Disassembly"
-TabWidth = 112.0
+TabWidth = 122.0
 Type = "DisassemblyPanel"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "SpecialCard.bf"
-TabWidth = 124.0
+TabWidth = 114.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\SpecialCard.bf"
 CursorPos = 140
@@ -108,17 +131,22 @@ TabWidth = 178.0
 Type = "SourceViewPanel"
 FilePath = "src\\BeefShenzenIOSolitaire.bf"
 CursorPos = 1098
-VertPos = 53.75
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-Active = true
+TabLabel = "CollisionComponent.bf"
+TabWidth = 172.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\CollisionComponent.bf"
+CursorPos = 229
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "CardManager.bf"
 TabWidth = 125.0
 Type = "SourceViewPanel"
 FilePath = "src\\CardManager.bf"
-CursorPos = 2303
-VertPos = 980.4255
+CursorPos = 2205
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
@@ -142,25 +170,77 @@ TabLabel = "Player.bf"
 TabWidth = 79.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\Player.bf"
-CursorPos = 56
-VertPos = 369.0698
-ProjectName = "BeefShenzenIOSolitaire"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Program.bf"
-TabWidth = 96.0
-Type = "SourceViewPanel"
-FilePath = "src\\Program.bf"
-CursorPos = 167
+CursorPos = 96
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
 IsFillWidget = true
 RequestedWidth = 1488.0
 RequestedHeight = 875.0
-SizePriority = 0.532268
-DefaultDocumentsTabbedView = true
+SizePriority = 0.4885873
 Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Sprite.bf"
+TabWidth = 89.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\Sprite.bf"
+CursorPos = 37
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Renderable.bf"
+TabWidth = 122.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\Renderable.bf"
+CursorPos = 224
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "CameraComponent.bf"
+TabWidth = 168.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\CameraComponent.bf"
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "GraphicsComponent.bf"
+TabWidth = 174.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Components\\GraphicsComponent.bf"
+CursorPos = 71
+ProjectName = "Atma.Entities"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Entity.bf"
+TabWidth = 76.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\Entity.bf"
+CursorPos = 31
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "aabb2.bf"
+TabWidth = 82.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Math\\aabb2.bf"
+CursorPos = 11221
+ProjectName = "Atma.Common"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "ImGui.bf"
+TabWidth = 78.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\DearImGui\\ImGui.bf"
+CursorPos = 134559
+ProjectName = "Atma.Common"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Buttons.bf"
+TabWidth = 88.0
+Type = "SourceViewPanel"
+FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Input\\Buttons.bf"
+ProjectName = "Atma.Common"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
@@ -168,13 +248,13 @@ TabLabel = "Card.bf"
 TabWidth = 73.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\Card.bf"
-CursorPos = 845
-VertPos = 182.5
+CursorPos = 1165
+VertPos = 481.5865
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets]]
 RequestedWidth = 250.0
-RequestedHeight = 273.0
+RequestedHeight = 403.0
 Type = "DockingFrame"
 SplitType = 1
 
@@ -235,3 +315,13 @@ Active = true
 TabLabel = "Output"
 TabWidth = 90.0
 Type = "OutputPanel"
+
+[[Breakpoints]]
+File = "src\\Entities\\InputManager.bf"
+Line = 26
+Column = 5
+
+[[Breakpoints]]
+File = "src\\Entities\\InputManager.bf"
+Line = 20
+Column = 5
