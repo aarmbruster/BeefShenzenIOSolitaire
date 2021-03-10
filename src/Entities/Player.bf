@@ -40,9 +40,10 @@ namespace BeefShenzenIOSolitaire.Entities
 		private PlayerInput input = new .() ~ Release(_);
 		private InputManager input_manager;
 
-		public this(InputManager input_manager) : base("Player")
+		public this(Scene scene) : base("Player")
 		{
-			this.input_manager = input_manager;
+			input_manager = scene.AddEntity(new InputManager());
+			//this.input_manager = input_manager;
 		}
 
 		protected override void OnUpdate()
@@ -58,9 +59,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			base.OnFixedUpdate();
 			input.Update(WorldPosition);
-			
-			//var aim = input.Aim;
-			//Console.WriteLine("X:{} Y:{}", aim.x, aim.y);
+			input_manager.input_axis = input.Aim;
+			//var aim = input.Aim;;
 		}
 	}
 }

@@ -14,7 +14,15 @@ namespace Atma
 
 		public void RegisterCollision(CollisionComponent collision)
 		{
-			CollisionComponents.Add(collision);
+			int i = 0;
+			for(; i < CollisionComponents.Count; i++)
+			{
+				if(collision.Entity.Depth >= CollisionComponents[i].Entity.Depth)
+				{
+					break;
+				}
+			}
+			CollisionComponents.Insert(i, collision);
 		}
 
 		public void UnRegisterCollision(CollisionComponent collision)

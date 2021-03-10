@@ -11,8 +11,10 @@ namespace BeefShenzenIOSolitaire
 		public Player player;
 		public Background background;
 
-		public SpecialButton bamboo_btn;
-		private CardManager card_manager = new CardManager() ~Release(_);
+		public SpecialButton dragon_green;
+		public SpecialButton dragon_red;
+		public SpecialButton dragon_white;
+		private CardManager card_manager = new CardManager()  ~ delete _;
 		public this() : base(.ExactFit, Screen.Size)
 		{
 			Time.SetTargetFramerate(60);
@@ -22,18 +24,19 @@ namespace BeefShenzenIOSolitaire
 			Core.Atlas.AddDirectory("main", "textures/small_icons");
 			Core.Atlas.Finalize();
 
-			let input_manager = AddEntity(new InputManager());
-			player = AddEntity(new Player(input_manager));
+			player = AddEntity(new Player(this));
 			background = AddEntity(new Background());
 
-			bamboo_btn = AddEntity(new SpecialButton(Core.Atlas["main/button_green_up"], 	float2(533, 53)));
-			bamboo_btn = AddEntity(new SpecialButton(Core.Atlas["main/button_red_up"], 		float2(533, 137)));
-			bamboo_btn = AddEntity(new SpecialButton(Core.Atlas["main/button_white_up"], 	float2(533, 219)));
+			dragon_green = AddEntity(new SpecialButton(Core.Atlas["main/button_green_up"], 	float2(533, 53)));
+			dragon_red = AddEntity(new SpecialButton(Core.Atlas["main/button_red_up"], 		float2(533, 137)));
+			dragon_white = AddEntity(new SpecialButton(Core.Atlas["main/button_white_up"], 	float2(533, 219)));
+			dragon_green.Depth = 1;
+			dragon_red.Depth = 1;
+			dragon_white.Depth = 1;
 
-			card_manager = new CardManager();
 			card_manager.place_cards(this);
 
-			this.Camera.AddRenderer(new SceneRenderer(this) { });
+			this.Camera.AddRenderer(new SceneRenderer(this));
 		}
 
 		public ~this()

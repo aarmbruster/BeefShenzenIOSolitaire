@@ -37,7 +37,7 @@ namespace BeefShenzenIOSolitaire
 			NumberCardInfo(.Char, "main/char_7", 7),
 			NumberCardInfo(.Char, "main/char_8", 8),
 			NumberCardInfo(.Char, "main/char_9", 9)
-		)) ~Release(_);
+		))  ~ delete _;
 
 		private static readonly List<BaseCardInfo> spec_cards =  new List<BaseCardInfo>(BaseCardInfo[?](
 			BaseCardInfo(.Green, 	"main/dragon_green"),
@@ -54,34 +54,21 @@ namespace BeefShenzenIOSolitaire
 			BaseCardInfo(.White, 	"main/dragon_white"),
 
 			BaseCardInfo(.Flower, 	"main/flower")
-		)) ~Release(_);
+		))  ~ delete _;
 
-		private List<Card> cards;
-		private List<Card> col0 = new List<Card>();
-		private List<Card> col1 = new List<Card>();
-		private List<Card> col2 = new List<Card>();
-		private List<Card> col3 = new List<Card>();
-		private List<Card> col4 = new List<Card>();
-		private List<Card> col5 = new List<Card>();
-		private List<Card> col6 = new List<Card>();
-		private List<Card> col7 = new List<Card>();
+		private List<Card> cards = new List<Card>() ~delete _;
+		private List<Card> col0 = new List<Card>()  ~ delete _;
+		private List<Card> col1 = new List<Card>()  ~ delete _;
+		private List<Card> col2 = new List<Card>()  ~ delete _;
+		private List<Card> col3 = new List<Card>()  ~ delete _;
+		private List<Card> col4 = new List<Card>()  ~ delete _;
+		private List<Card> col5 = new List<Card>()  ~ delete _;
+		private List<Card> col6 = new List<Card>()  ~ delete _;
+		private List<Card> col7 = new List<Card>()  ~ delete _;
 		
 		public this()
 		{
 
-		}
-
-		public ~this()
-		{
-			delete(cards);
-			delete (col0);
-			delete (col1);
-			delete (col2);
-			delete (col3);
-			delete (col4);
-			delete (col5);
-			delete (col6);
-			delete (col7);
 		}
 
 		private List<Card> GetColumn(int i)
@@ -102,8 +89,7 @@ namespace BeefShenzenIOSolitaire
 
 		public void place_cards(Scene scene)
 		{
-			cards = new List<Card>();
-			
+
 			for(NumberCardInfo num_card in num_cards)
 			{
 				cards.Add(new NumberCard(num_card));
@@ -113,7 +99,17 @@ namespace BeefShenzenIOSolitaire
 			{
 				cards.Add(new SpecialCard(spec_card));
 			}
-			
+
+			for(int i = 0; i < 8; i++)
+			{
+
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let col = GetColumn(i);
+				col.Add(card);
+				card.Depth = 0;
+				card.Position = float2(i * 152.0f + 106, 365.0f + col.Count * 36);
+			}
+
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
 				Card card = scene.AddEntity(cards[i]);
@@ -121,12 +117,11 @@ namespace BeefShenzenIOSolitaire
 				let col = GetColumn(col_index);
 				col.Add(card);
 				card.Depth = col.Count;
-				card.Position = float2(col_index * 152.0f + 106, 366.0f + col.Count * 36);
+				card.Position = float2(col_index * 152.0f + 106, 365.0f + col.Count * 36);
+				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
+				col[col.Count - 2].SetChild(card);
 			}
-
-			num_cards.Clear();
-			spec_cards.Clear();
 		}
 	}
 }
