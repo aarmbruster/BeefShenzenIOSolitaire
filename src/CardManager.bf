@@ -7,6 +7,17 @@ namespace BeefShenzenIOSolitaire
 {
 	public class CardManager
 	{
+		private static uint8 start_card_depth = 64;
+		private static uint8 picked_card_depth = 128;
+		public static uint8 scd()
+		{
+			return start_card_depth;
+		}
+		public static uint8 pcd()
+		{
+			return picked_card_depth;
+		}
+
 		private static readonly List<NumberCardInfo> num_cards = new List<NumberCardInfo>(NumberCardInfo[?](
 			NumberCardInfo(.Coin, "main/coins_1", 1),
 			NumberCardInfo(.Coin, "main/coins_2", 2),
@@ -87,9 +98,8 @@ namespace BeefShenzenIOSolitaire
 			return new List<Card>();
 		}
 
-		public void place_cards(Scene scene)
+		public void create_cards()
 		{
-
 			for(NumberCardInfo num_card in num_cards)
 			{
 				cards.Add(new NumberCard(num_card));
@@ -99,7 +109,20 @@ namespace BeefShenzenIOSolitaire
 			{
 				cards.Add(new SpecialCard(spec_card));
 			}
+		}
 
+		public void shuffle_cards(int seed)
+		{
+			for(int i = cards.Count - 1; i >= 0; i--)
+			{
+				Random random = new Random(seed);
+				random.Shuffle<Card>(cards);
+				delete(random);
+			}
+		}
+
+		public void place_cards(Scene scene)
+		{
 			for(int i = 0; i < 8; i++)
 			{
 
@@ -116,7 +139,7 @@ namespace BeefShenzenIOSolitaire
 				int col_index = i%8;
 				let col = GetColumn(col_index);
 				col.Add(card);
-				card.Depth = col.Count;
+				card.Depth = scd() + col.Count;
 				card.Position = float2(col_index * 152.0f + 106, 365.0f + col.Count * 36);
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);

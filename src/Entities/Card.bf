@@ -50,6 +50,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		private bool isMovable = false;
 		private bool isPickedUp = false;
 
+		private float2 input_offset;
+
 		public this(CardType card_type, String name) : base (name)
 		{
 			this.card_type = card_type;
@@ -80,14 +82,29 @@ namespace BeefShenzenIOSolitaire.Entities
 			child = null;
 		}
 
+		public void SetDepth(uint8 in_depth)
+		{
+			this.Depth = in_depth;
+		}
+
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
 		}
 
+		public void OnPickedUp(uint8 in_depth, float2 input_offset)
+		{
+			SetDepth(in_depth);
+			this.input_offset = input_offset;
+			if(child != null)
+			{
+				child.OnPickedUp(in_depth + 1, input_offset);
+			}
+		}
+
 		public void MovetoWorld(float2 new_world_pos)
 		{
-			Position = new_world_pos;
+			Position = new_world_pos - input_offset;
 			if(child != null)
 				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
 		}
@@ -96,14 +113,14 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			base.OnCursorEnter();
 			this.isMousedOver = true;
-			Console.WriteLine("Cursor enter: {}", this.card_name);
+			//Console.WriteLine("Cursor enter: {}", this.card_name);
 		}
 
 		public override void OnCursorExit()
 		{
 			base.OnCursorExit();
 			isMousedOver = false;
-			Console.WriteLine("Cursor exit: {}", this.card_name);
+			//Console.WriteLine("Cursor exit: {}", this.card_name);
 		}
 
 		protected override void OnFixedUpdate()

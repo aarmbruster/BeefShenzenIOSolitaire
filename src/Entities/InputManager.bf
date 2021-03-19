@@ -11,9 +11,53 @@ namespace BeefShenzenIOSolitaire.Entities
 		public float2 input_axis;
 		public Entity focused_entity;
 
+		private bool mouseDown = false;
+
+		private Card picked_entity;
+
 		public void MouseDown() {}
 
 		public void MouseUp() {}
+
+		protected void CheckCardClick()
+		{
+			for(var col in Scene.CollisionComponents)
+			{
+				if(col.WorldBounds.Intersects(input_axis))
+				{
+					Card card = (Card)col.Entity;
+					if(card != null)
+					{
+						picked_entity = card;
+						card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);
+					}
+					
+					return;
+				}
+			}
+		}
+
+		protected override void OnUpdate()
+		{
+			base.OnUpdate();
+			if(Core.Input.MousePressed(.Left) && !mouseDown)
+			{
+				Console.WriteLine("Mouse Down");
+				mouseDown = true;
+				CheckCardClick();
+			}
+
+			if(Core.Input.MouseReleased(.Left) && mouseDown)
+			{
+				Console.WriteLine("Mouse Up");
+				mouseDown = false;
+			}
+
+			if(picked_entity != null)
+			{
+				picked_entity.MovetoWorld(input_axis);
+			}	
+		}
 
 		protected override new void OnFixedUpdate()
 		{

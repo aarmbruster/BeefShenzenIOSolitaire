@@ -33,15 +33,18 @@ namespace BeefShenzenIOSolitaire
 			dragon_green.Depth = 1;
 			dragon_red.Depth = 1;
 			dragon_white.Depth = 1;
+			
+			card_manager.create_cards();
 
+			//DateTime time = DateTime();
+			int rand_time = DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Month + DateTime.Now.Second;
+
+			Random rand = new Random(rand_time);
+			card_manager.shuffle_cards(rand.Next(0, 60000));
+			delete(rand);
 			card_manager.place_cards(this);
 
 			this.Camera.AddRenderer(new SceneRenderer(this));
-		}
-
-		public ~this()
-		{
-			//delete(card_manager);
 		}
 
 		public override void FixedUpdate()
