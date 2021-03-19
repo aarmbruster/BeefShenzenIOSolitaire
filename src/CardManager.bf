@@ -9,6 +9,7 @@ namespace BeefShenzenIOSolitaire
 	{
 		private static uint8 start_card_depth = 64;
 		private static uint8 picked_card_depth = 128;
+
 		public static uint8 scd()
 		{
 			return start_card_depth;
@@ -68,34 +69,17 @@ namespace BeefShenzenIOSolitaire
 		))  ~ delete _;
 
 		private List<Card> cards = new List<Card>() ~delete _;
-		private List<Card> col0 = new List<Card>()  ~ delete _;
-		private List<Card> col1 = new List<Card>()  ~ delete _;
-		private List<Card> col2 = new List<Card>()  ~ delete _;
-		private List<Card> col3 = new List<Card>()  ~ delete _;
-		private List<Card> col4 = new List<Card>()  ~ delete _;
-		private List<Card> col5 = new List<Card>()  ~ delete _;
-		private List<Card> col6 = new List<Card>()  ~ delete _;
-		private List<Card> col7 = new List<Card>()  ~ delete _;
+
+		public static List<Column> columns = new List<Column>() ~delete _;// ~Release(_);
 		
 		public this()
 		{
 
 		}
 
-		private List<Card> GetColumn(int i)
+		private Column GetColumn(int i)
 		{
-			switch(i)
-			{
-			case 0: return col0;
-			case 1: return col1;
-			case 2: return col2;
-			case 3: return col3;
-			case 4: return col4;
-			case 5: return col5;
-			case 6: return col6;
-			case 7: return col7;
-			}
-			return new List<Card>();
+			return columns[i];
 		}
 
 		public void create_cards()
@@ -113,37 +97,43 @@ namespace BeefShenzenIOSolitaire
 
 		public void shuffle_cards(int seed)
 		{
-			for(int i = cards.Count - 1; i >= 0; i--)
+			Random random = new Random(seed);
+			random.Shuffle<Card>(cards);
+			delete(random);
+		}
+
+		public void place_columns(Scene scene)
+		{
+			for(int i = 0; i < 8; i++)
 			{
-				Random random = new Random(seed);
-				random.Shuffle<Card>(cards);
-				delete(random);
+				let column = scene.AddEntity(new Column());
+				column.Position = float2(i * 152.0f + 106, 365.0f);
+				columns.Add(column);
 			}
 		}
 
 		public void place_cards(Scene scene)
 		{
-			for(int i = 0; i < 8; i++)
+			for(int i = 0; i < columns.Count; i++)
 			{
-
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(i);
-				col.Add(card);
+				col.AddCard(card);
 				card.Depth = 0;
-				card.Position = float2(i * 152.0f + 106, 365.0f + col.Count * 36);
+				card.Position = float2(i * 152.0f + 106, 365.0f + columns.Count * 36);
 			}
 
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
 				Card card = scene.AddEntity(cards[i]);
 				int col_index = i%8;
-				let col = GetColumn(col_index);
-				col.Add(card);
-				card.Depth = scd() + col.Count;
-				card.Position = float2(col_index * 152.0f + 106, 365.0f + col.Count * 36);
+				let column = GetColumn(col_index);
+				//col.Add(card);
+				card.Depth = scd() + columns[col_index].cards.Count;
+				card.Position = float2(col_index * 152.0f + 106, 365.0f + columns[col_index].cards.Count * 36);
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
-				col[col.Count - 2].SetChild(card);
+				column.AddCard(card);
 			}
 		}
 	}

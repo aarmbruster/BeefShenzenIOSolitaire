@@ -37,19 +37,37 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
+		protected void CheckCardRelease()
+		{
+			if(picked_entity != null)
+			{
+				for(var column in CardManager.columns)
+				{
+					/*if(col.Entity != picked_entity && col.WorldBounds.Intersects(input_axis))
+					{
+						if(col.Entity == focused_entity)
+							return;
+						if(focused_entity != null)
+							focused_entity.OnCursorExit();
+						focused_entity = col.Entity;
+						col.Entity.OnCursorEnter();
+						return;
+					}*/
+				}
+			}
+		}
+
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
 			if(Core.Input.MousePressed(.Left) && !mouseDown)
 			{
-				Console.WriteLine("Mouse Down");
 				mouseDown = true;
 				CheckCardClick();
 			}
 
 			if(Core.Input.MouseReleased(.Left) && mouseDown)
 			{
-				Console.WriteLine("Mouse Up");
 				mouseDown = false;
 			}
 

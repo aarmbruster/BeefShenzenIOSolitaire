@@ -2,7 +2,6 @@ using Atma;
 using System;
 using BeefShenzenIOSolitaire.Entities;
 
-
 namespace BeefShenzenIOSolitaire
 {
 	public class BeefShenzenIOSolitaire : Scene
@@ -39,9 +38,12 @@ namespace BeefShenzenIOSolitaire
 			//DateTime time = DateTime();
 			int rand_time = DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Month + DateTime.Now.Second;
 
+			card_manager.place_columns(this);
+
 			Random rand = new Random(rand_time);
 			card_manager.shuffle_cards(rand.Next(0, 60000));
 			delete(rand);
+
 			card_manager.place_cards(this);
 
 			this.Camera.AddRenderer(new SceneRenderer(this));
