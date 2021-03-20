@@ -10,7 +10,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		}
 
-		public override void SetChild(Card new_child)
+		public override void SetChild(Entity new_child)
 		{
 			if(child == null) child = new_child;
 			child.Position = this.Position + float2(0, 0.f);

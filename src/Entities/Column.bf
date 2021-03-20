@@ -25,9 +25,15 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public void AddCard(Card in_card)
 		{
+			if(cards.Count > 0)
+			{
+				cards.Back.SetChild(in_card);
+			}
+
 			collision.LocalBounds = in_card.collision.LocalBounds;
 			collision.DebugRender();
 			cards.Add(in_card);
+			
 		}
 		public void RemoveCard(Card in_card)
 		{

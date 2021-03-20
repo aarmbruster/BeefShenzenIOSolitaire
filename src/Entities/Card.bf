@@ -41,7 +41,7 @@ namespace BeefShenzenIOSolitaire.Entities
 	{
 		public CollisionComponent collision;
 
-		protected Card child;
+		
 		private Sprite card_back;
 		private Sprite card_front;
 		private CardType card_type;
@@ -49,8 +49,6 @@ namespace BeefShenzenIOSolitaire.Entities
 		private bool isMousedOver = false;
 		private bool isMovable = false;
 		private bool isPickedUp = false;
-
-		private float2 input_offset;
 
 		public this(CardType card_type, String name) : base (name)
 		{
@@ -71,42 +69,9 @@ namespace BeefShenzenIOSolitaire.Entities
 			collision.LocalBounds = card_back.LocalBounds;
 		}
 
-		public virtual void SetChild(Card new_child)
-		{
-			if(child == null) child = new_child;
-			child.Position = this.Position + float2(0, 36.f);
-		}
-
-		public void RemoveChild()
-		{
-			child = null;
-		}
-
-		public void SetDepth(uint8 in_depth)
-		{
-			this.Depth = in_depth;
-		}
-
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
-		}
-
-		public void OnPickedUp(uint8 in_depth, float2 input_offset)
-		{
-			SetDepth(in_depth);
-			this.input_offset = input_offset;
-			if(child != null)
-			{
-				child.OnPickedUp(in_depth + 1, input_offset);
-			}
-		}
-
-		public void MovetoWorld(float2 new_world_pos)
-		{
-			Position = new_world_pos - input_offset;
-			if(child != null)
-				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
 		}
 
 		public override void OnCursorEnter()

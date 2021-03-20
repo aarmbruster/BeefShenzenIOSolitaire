@@ -26,16 +26,15 @@ namespace BeefShenzenIOSolitaire
 			player = AddEntity(new Player(this));
 			background = AddEntity(new Background());
 
-			dragon_green = AddEntity(new SpecialButton(Core.Atlas["main/button_green_up"], 	float2(533, 53)));
-			dragon_red = AddEntity(new SpecialButton(Core.Atlas["main/button_red_up"], 		float2(533, 137)));
-			dragon_white = AddEntity(new SpecialButton(Core.Atlas["main/button_white_up"], 	float2(533, 219)));
+			dragon_green = AddEntity(	new SpecialButton(Core.Atlas["main/button_green_up"], 	float2(533, 53)));
+			dragon_red = AddEntity(		new SpecialButton(Core.Atlas["main/button_red_up"], 	float2(533, 137)));
+			dragon_white = AddEntity(	new SpecialButton(Core.Atlas["main/button_white_up"], 	float2(533, 219)));
 			dragon_green.Depth = 1;
 			dragon_red.Depth = 1;
 			dragon_white.Depth = 1;
 			
 			card_manager.create_cards();
 
-			//DateTime time = DateTime();
 			int rand_time = DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Month + DateTime.Now.Second;
 
 			card_manager.place_columns(this);
