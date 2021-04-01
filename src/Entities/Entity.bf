@@ -38,7 +38,7 @@ namespace Atma
 				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
 		}
 
-		public void OnPickedUp(uint8 in_depth, float2 input_offset)
+		public virtual void OnPickedUp(uint8 in_depth, float2 input_offset)
 		{
 			SetDepth(in_depth);
 			this.input_offset = input_offset;
@@ -47,5 +47,12 @@ namespace Atma
 				child.OnPickedUp(in_depth + 1, input_offset);
 			}
 		}
+
+		public virtual bool CanPickUp()
+		{
+			return false;
+		}
+
+		
 	}
 }

@@ -17,6 +17,14 @@ namespace BeefShenzenIOSolitaire.Entities
 		Holder
 	}
 
+	enum CardState
+	{
+		Stacked,
+		Temped,
+		Resolved,
+		PickedUp
+	}
+
 	public struct BaseCardInfo
 	{
 		public String card_name;
@@ -41,7 +49,9 @@ namespace BeefShenzenIOSolitaire.Entities
 	{
 		public CollisionComponent collision;
 
-		
+		public  CardState card_state = .Stacked;
+		public Column column;
+
 		private Sprite card_back;
 		private Sprite card_front;
 		private CardType card_type;
@@ -67,6 +77,14 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_front.SetDepth(0.1f);
 			collision = Components.Add(new CollisionComponent(true));
 			collision.LocalBounds = card_back.LocalBounds;
+		}
+
+		public override void OnPickedUp(uint8 in_depth, float2 input_offset)
+		{
+			base.OnPickedUp(in_depth, input_offset);
+			card_state = .PickedUp;
+			column.RemoveCard(this);
+			//column.Remove(this);
 		}
 
 		protected override void OnUpdate()
@@ -101,6 +119,31 @@ namespace BeefShenzenIOSolitaire.Entities
 		public override void OnMouseUp()
 		{
 			base.OnMouseUp();
+		}
+
+		public override bool CanPickUp()
+		{
+			switch(card_state)
+			{
+			case .Stacked:
+				return true;
+			case .Resolved:
+				return false;
+			case .Temped:
+				 return true;
+			case .PickedUp:
+				return false;
+			}
+		}
+
+		public virtual void SetState(CardState new_state)
+		{
+			this.card_state = new_state;
+		}
+
+		public float2 GetChildOffset(Card in_child)
+		{
+			return float2(0, in_child.collision.Height);
 		}
 	}
 }

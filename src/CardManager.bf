@@ -9,7 +9,7 @@ namespace BeefShenzenIOSolitaire
 	{
 		private static uint8 start_card_depth = 64;
 		private static uint8 picked_card_depth = 128;
-
+		
 		public static uint8 scd()
 		{
 			return start_card_depth;
@@ -18,6 +18,9 @@ namespace BeefShenzenIOSolitaire
 		{
 			return picked_card_depth;
 		}
+
+		public readonly static float column_y = 284;
+		public readonly static float card_offset = 36;
 
 		private static readonly List<NumberCardInfo> num_cards = new List<NumberCardInfo>(NumberCardInfo[?](
 			NumberCardInfo(.Coin, "main/coins_1", 1),
@@ -107,7 +110,7 @@ namespace BeefShenzenIOSolitaire
 			for(int i = 0; i < 8; i++)
 			{
 				let column = scene.AddEntity(new Column());
-				column.Position = float2(i * 152.0f + 106, 284.0f);
+				column.Position = float2(i * 152.0f + 106, 284.0f + column.sprite.Height / 2);
 				columns.Add(column);
 			}
 		}
@@ -120,19 +123,22 @@ namespace BeefShenzenIOSolitaire
 				let col = GetColumn(i);
 				col.AddCard(card);
 				card.Depth = 0;
-				card.Position = float2(i * 152.0f + 106, 365.0f + columns.Count * 36);
+				card.Position = float2(i * 152.0f + 106, 284.f + card.collision.LocalBounds.Height/2);
 			}*/
 
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
-				Card card = scene.AddEntity(cards[i]);
 				int col_index = i%8;
 				let column = GetColumn(col_index);
+
+				Card card = scene.AddEntity(cards[i]);
+				card.column = column;
+
 				card.Depth = scd() + columns[col_index].cards.Count;
 				let card_count = columns[col_index].cards.Count;
-				let y = 284.0f + card.collision.LocalBounds.Height * 0.5f + card_count * 36;
+				let card_height = card.collision.LocalBounds.Height;
+				let y = column_y + card_height * 0.5f + card_count * card_offset;
 				card.Position = float2(col_index * 152.0f + 106, y);
-				Console.WriteLine("card y position: {}", y);
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
 				column.AddCard(card);

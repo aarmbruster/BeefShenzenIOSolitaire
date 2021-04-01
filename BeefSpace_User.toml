@@ -1,7 +1,7 @@
 FileVersion = 1
 LastConfig = "Debug"
 LastPlatform = "Win64"
-RecentFilesList = ["src\\CardManager.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf", "src\\Entities\\Column.bf", "src\\BeefShenzenIOSolitaire.bf", "src\\Entities\\Card.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Game.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Component.bf", "src\\Entities\\InputManager.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Random.bf", "src\\Entities\\Background.bf", "Disassembly", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Input\\VirtualButton.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\SDL2\\src\\SDL2.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Scene.bf", "Disassembly"]
+RecentFilesList = ["src\\Entities\\Card.bf", "src\\CardManager.bf", "src\\Entities\\Column.bf", "src\\Entities\\InputManager.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf", "src\\Entities\\Entity.bf", "Disassembly", "src\\Entities\\Components\\CollisionComponent.bf", "src\\Entities\\Background.bf", "src\\BeefShenzenIOSolitaire.bf", "src\\Entities\\CardHolder.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Release.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Game.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Random.bf", "Disassembly", "c:\\Program Files\\BeefLang\\BeefLibs\\SDL2\\src\\SDL2.bf", "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Scene.bf", "Disassembly"]
 
 [MainWindow]
 X = 62
@@ -29,7 +29,7 @@ Type = "DockingFrame"
 SplitType = 1
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets]]
-RequestedWidth = 126.0
+RequestedWidth = 150.0
 RequestedHeight = 200.0
 Type = "TabbedView"
 
@@ -43,18 +43,37 @@ Type = "ProjectPanel"
 IsFillWidget = true
 RequestedWidth = 1488.0
 RequestedHeight = 875.0
-SizePriority = 1488.0
-DefaultDocumentsTabbedView = true
+SizePriority = 0.4794842
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "List.bf"
-TabWidth = 64.0
+TabLabel = "Disassembly"
+TabWidth = 122.0
+Type = "DisassemblyPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "CollisionComponent.bf"
+TabWidth = 162.0
 Type = "SourceViewPanel"
-FilePath = "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf"
-CursorPos = 3155
-VertPos = 2400.0
-ProjectName = "corlib"
+FilePath = "src\\Entities\\Components\\CollisionComponent.bf"
+CursorPos = 580
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Entity.bf"
+TabWidth = 76.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\Entity.bf"
+CursorPos = 715
+ProjectName = "BeefShenzenIOSolitaire"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "CardHolder.bf"
+TabWidth = 112.0
+Type = "SourceViewPanel"
+FilePath = "src\\Entities\\CardHolder.bf"
+CursorPos = 71
+ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "Release.bf"
@@ -77,8 +96,8 @@ TabLabel = "Column.bf"
 TabWidth = 89.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\Column.bf"
-CursorPos = 158
-VertPos = 9.0
+CursorPos = 1217
+VertPos = 246.0
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
@@ -86,7 +105,7 @@ TabLabel = "BeefShenzenIOSolitaire.bf"
 TabWidth = 178.0
 Type = "SourceViewPanel"
 FilePath = "src\\BeefShenzenIOSolitaire.bf"
-CursorPos = 1507
+CursorPos = 852
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
@@ -94,23 +113,8 @@ TabLabel = "Background.bf"
 TabWidth = 114.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\Background.bf"
+CursorPos = 174
 ProjectName = "BeefShenzenIOSolitaire"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "Component.bf"
-TabWidth = 113.0
-Type = "SourceViewPanel"
-FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Entities\\src\\Component.bf"
-CursorPos = 599
-ProjectName = "Atma.Entities"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "VirtualButton.bf"
-TabWidth = 119.0
-Type = "SourceViewPanel"
-FilePath = "d:\\Source\\Atma.Framework\\src\\Atma.Common\\src\\Input\\VirtualButton.bf"
-CursorPos = 998
-ProjectName = "Atma.Common"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
@@ -118,8 +122,8 @@ TabLabel = "CardManager.bf"
 TabWidth = 125.0
 Type = "SourceViewPanel"
 FilePath = "src\\CardManager.bf"
-CursorPos = 3630
-VertPos = 1419.0
+CursorPos = 4104
+VertPos = 1579.792
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
@@ -127,15 +131,25 @@ TabLabel = "InputManager.bf"
 TabWidth = 126.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\InputManager.bf"
-CursorPos = 872
+CursorPos = 1547
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets]]
 IsFillWidget = true
 RequestedWidth = 1468.0
 RequestedHeight = 627.0
-SizePriority = 1468.0
+SizePriority = 0.5205158
+DefaultDocumentsTabbedView = true
 Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "List.bf"
+TabWidth = 64.0
+Type = "SourceViewPanel"
+FilePath = "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Collections\\List.bf"
+CursorPos = 3707
+VertPos = 2985.0
+ProjectName = "corlib"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
@@ -143,13 +157,13 @@ TabLabel = "Card.bf"
 TabWidth = 73.0
 Type = "SourceViewPanel"
 FilePath = "src\\Entities\\Card.bf"
-CursorPos = 1006
-VertPos = 464.2683
+CursorPos = 2667
+VertPos = 1591.801
 ProjectName = "BeefShenzenIOSolitaire"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
 RequestedWidth = 250.0
-RequestedHeight = 265.0
+RequestedHeight = 290.0
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
@@ -162,7 +176,7 @@ TabLabel = "Watch"
 TabWidth = 86.0
 Type = "WatchPanel"
 Columns = [{Width = 200.0}, {Width = 268.0}, {Width = 200.0}]
-Items = ["card_info", "this.card_name", ""]
+Items = ["card_info", "this.card_name", "cards", "card_back", ""]
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "Auto"

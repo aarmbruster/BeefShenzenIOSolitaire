@@ -26,7 +26,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				if(col.WorldBounds.Intersects(input_axis))
 				{
 					Card card = (Card)col.Entity;
-					if(card != null)
+					if(card != null && card.CanPickUp())
 					{
 						picked_entity = card;
 						card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);

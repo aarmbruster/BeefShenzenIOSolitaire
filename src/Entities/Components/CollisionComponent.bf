@@ -3,7 +3,7 @@ namespace Atma.Entities.Components
 {
 	public class CollisionComponent : Component
 	{
-		public bool isEnabled;
+		public bool isEnabled = true;
 		private aabb2 _local_bounds;
 
 		public this(bool active = false) : base(active)
@@ -15,9 +15,7 @@ namespace Atma.Entities.Components
 		{
 			get
 			{
-				if(isEnabled)
-					return _local_bounds;
-				return aabb2(0,0,0,0);
+				return _local_bounds;
 			}
 			set
 			{
@@ -33,5 +31,8 @@ namespace Atma.Entities.Components
 				return bounds;
 			}
 		}
+
+		public float Width => _local_bounds.Width;
+		public float Height => _local_bounds.Height;
 	}
 }
