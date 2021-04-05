@@ -41,19 +41,16 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			if(picked_entity != null)
 			{
-				/*for(var column in CardManager.columns)
+				for(var column in CardManager.columns)
 				{
-					if(col.Entity != picked_entity && col.WorldBounds.Intersects(input_axis))
+					if(!column.Contains(picked_entity) && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
-						if(col.Entity == focused_entity)
-							return;
-						if(focused_entity != null)
-							focused_entity.OnCursorExit();
-						focused_entity = col.Entity;
-						col.Entity.OnCursorEnter();
+						column.Add(picked_entity);
+						column.Back.SetChild(picked_entity);
+						picked_entity = null;
 						return;
 					}
-				}*/
+				}
 			}
 		}
 
@@ -69,6 +66,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(Core.Input.MouseReleased(.Left) && mouseDown)
 			{
 				mouseDown = false;
+				CheckCardRelease();
 			}
 
 			if(picked_entity != null)
