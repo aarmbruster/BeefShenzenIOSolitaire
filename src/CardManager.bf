@@ -14,13 +14,18 @@ namespace BeefShenzenIOSolitaire
 		{
 			return start_card_depth;
 		}
+
 		public static uint8 pcd()
 		{
 			return picked_card_depth;
 		}
 
 		public readonly static float column_y = 284;
+		public readonly static float single_y = 19;
 		public readonly static float card_offset = 36;
+
+		public static List<Card> tip_cards = new List<Card>() ~delete _;
+		public static List<List<Card>> columns = new List<List<Card>>(15) ~delete _;
 
 		private static readonly List<NumberCardInfo> num_cards = new List<NumberCardInfo>(NumberCardInfo[?](
 			NumberCardInfo(.Coin, "main/coins_1", 1),
@@ -73,28 +78,40 @@ namespace BeefShenzenIOSolitaire
 
 		private List<Card> cards = new List<Card>() ~delete _;
 
-		public static List<Column> columns = new List<Column>() ~delete _;// ~Release(_);
+		public CardHolder[15] card_holders = .();
+
+
+		//public static List<Column> columns = new List<Column>() ~delete _;// ~Release(_);
 		
 		public this()
 		{
 
 		}
 
-		private Column GetColumn(int i)
+		public ~this()
+		{
+			for(List<Card> l in columns)
+			{
+				delete(l);
+			}
+			columns.Clear();
+		}
+
+		private List<Card> GetColumn(int i)
 		{
 			return columns[i];
 		}
 
-		public void create_cards()
+		public void create_cards(Scene scene)
 		{
 			for(NumberCardInfo num_card in num_cards)
 			{
-				cards.Add(new NumberCard(num_card));
+				cards.Add(scene.AddEntity(new NumberCard(num_card)));
 			}
 
 			for(BaseCardInfo spec_card in spec_cards)
 			{
-				cards.Add(new SpecialCard(spec_card));
+				cards.Add(scene.AddEntity(new SpecialCard(spec_card)));
 			}
 		}
 
@@ -105,43 +122,77 @@ namespace BeefShenzenIOSolitaire
 			delete(random);
 		}
 
-		public void place_columns(Scene scene)
+		public void create_columns(Scene scene)
 		{
-			for(int i = 0; i < 8; i++)
+			for(int i = 0; i < columns.Capacity; i++)
 			{
-				let column = scene.AddEntity(new Column());
-				column.Position = float2(i * 152.0f + 106, 284.0f + column.sprite.Height / 2);
-				columns.Add(column);
+				columns.Add(new List<Card>());
 			}
 		}
 
 		public void place_cards(Scene scene)
 		{
-			/*for(int i = 0; i < columns.Count; i++)
+			for(int i = 0; i < 8; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(i);
-				col.AddCard(card);
-				card.Depth = 0;
-				card.Position = float2(i * 152.0f + 106, 284.f + card.collision.LocalBounds.Height/2);
-			}*/
+				col.Add(card);
+				card.Depth = 1;
+				card.Position = float2(i * 152.0f + 106, column_y + card.collision.LocalBounds.Height/2);
+				card_holders[i] = card;
+			}	
+
+			for(int i = 0; i < 3; i++)
+			{
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let col = GetColumn(i + 8);
+				col.Add(card);
+				card.Depth = 1;
+				card.Position = float2(i * 152.0f + 106, single_y + card.collision.LocalBounds.Height/2);
+				card_holders[i + 8] = card;
+			}
+
+			for(int i = 0; i < 3; i++)
+			{
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let col = GetColumn(i + 11);
+				col.Add(card);
+				card.Depth = 1;
+				card.Position = float2(i * 152.0f + 866, single_y + card.collision.LocalBounds.Height/2);
+				card_holders[i + 11] = card;
+			}
+			{
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let col = GetColumn(14);
+				col.Add(card);
+				card.Depth = 1;
+				card.Position = float2(674, single_y + card.collision.LocalBounds.Height/2);
+				card_holders[14] = card;
+			}
 
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
 				int col_index = i%8;
-				let column = GetColumn(col_index);
+				int card_index = i;
+				
+				let col = GetColumn(col_index);
+				let parent = col[col.Count - 1];
 
-				Card card = scene.AddEntity(cards[i]);
-				card.column = column;
+				Card card = cards[card_index];
+				card.SetDepth((uint8)col.Count + 1);
+				col.Add(card);
 
-				card.Depth = scd() + columns[col_index].cards.Count;
-				let card_count = columns[col_index].cards.Count;
-				let card_height = card.collision.LocalBounds.Height;
-				let y = column_y + card_height * 0.5f + card_count * card_offset;
-				card.Position = float2(col_index * 152.0f + 106, y);
+				parent.SetChild(card);
+				
+				//card.column = column;
+
+				//card.Depth = scd() + columns[col_index].cards.Count;
+				//let card_count = columns[col_index].cards.Count;
+				//let card_height = card.collision.LocalBounds.Height;
+				//let y = column_y + card_height * 0.5f + card_count * card_offset;
+				//card.Position = float2(col_index * 152.0f + 106, y);
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
-				column.AddCard(card);
 			}
 		}
 	}

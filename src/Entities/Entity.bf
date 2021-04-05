@@ -6,7 +6,7 @@ namespace Atma
 	{
 		protected float2 input_offset;
 
-		protected Entity child;
+		public Entity child {get; private set;}
 
 		public virtual void OnCursorEnter() { }
 

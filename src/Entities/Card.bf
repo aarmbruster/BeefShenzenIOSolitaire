@@ -50,7 +50,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		public CollisionComponent collision;
 
 		public  CardState card_state = .Stacked;
-		public Column column;
+		//public Column column;
 
 		private Sprite card_back;
 		private Sprite card_front;
@@ -79,12 +79,15 @@ namespace BeefShenzenIOSolitaire.Entities
 			collision.LocalBounds = card_back.LocalBounds;
 		}
 
+		public virtual float GetChildOffset()
+		{
+			return CardManager.card_offset;
+		}
+
 		public override void OnPickedUp(uint8 in_depth, float2 input_offset)
 		{
 			base.OnPickedUp(in_depth, input_offset);
 			card_state = .PickedUp;
-			column.RemoveCard(this);
-			//column.Remove(this);
 		}
 
 		protected override void OnUpdate()
@@ -136,14 +139,20 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
+		public override void SetChild(Entity new_child)
+		{
+			base.SetChild(new_child);
+			new_child.Position = this.Position + GetChildOffset((Card)new_child);
+		}
+
 		public virtual void SetState(CardState new_state)
 		{
 			this.card_state = new_state;
 		}
 
-		public float2 GetChildOffset(Card in_child)
+		public virtual float2 GetChildOffset(Card in_child)
 		{
-			return float2(0, in_child.collision.Height);
+			return float2(0, CardManager.card_offset);
 		}
 	}
 }

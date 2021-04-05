@@ -5,15 +5,16 @@ namespace BeefShenzenIOSolitaire.Entities
 {
 	public class CardHolder : Card
 	{
+		Sprite card_back;
+
 		public this(CardType card_type, String name) : base(card_type, name)
 		{
-
+			card_back = Components.Add(new Sprite(Core.Atlas["main/card_back"]));
 		}
 
-		public override void SetChild(Entity new_child)
+		public override float2 GetChildOffset(Card in_child)
 		{
-			if(child == null) child = new_child;
-			child.Position = this.Position + float2(0, 0.f);
+			return float2.Zero;
 		}
 	}
 }

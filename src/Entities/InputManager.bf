@@ -41,9 +41,9 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			if(picked_entity != null)
 			{
-				for(var column in CardManager.columns)
+				/*for(var column in CardManager.columns)
 				{
-					/*if(col.Entity != picked_entity && col.WorldBounds.Intersects(input_axis))
+					if(col.Entity != picked_entity && col.WorldBounds.Intersects(input_axis))
 					{
 						if(col.Entity == focused_entity)
 							return;
@@ -52,8 +52,8 @@ namespace BeefShenzenIOSolitaire.Entities
 						focused_entity = col.Entity;
 						col.Entity.OnCursorEnter();
 						return;
-					}*/
-				}
+					}
+				}*/
 			}
 		}
 

@@ -33,11 +33,11 @@ namespace BeefShenzenIOSolitaire
 			dragon_red.Depth = 1;
 			dragon_white.Depth = 1;
 			
-			card_manager.create_cards();
+			card_manager.create_cards(this);
 
 			int rand_time = DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Month + DateTime.Now.Second;
 
-			card_manager.place_columns(this);
+			card_manager.create_columns(this);
 
 			Random rand = new Random(rand_time);
 			card_manager.shuffle_cards(rand.Next(0, 60000));
