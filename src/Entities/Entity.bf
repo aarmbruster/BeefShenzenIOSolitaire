@@ -4,7 +4,7 @@ namespace Atma
 {
 	public extension Entity
 	{
-		protected float2 input_offset;
+		public float2 input_offset {get; protected set;}
 
 		public Entity child {get; private set;}
 
@@ -26,14 +26,14 @@ namespace Atma
 			child = null;
 		}
 
-		public void SetDepth(uint8 in_depth)
+		public void SetDepth(float in_depth)
 		{
 			this.Depth = in_depth;
 		}
 
 		public void MovetoWorld(float2 new_world_pos)
 		{
-			Position = new_world_pos - input_offset;
+			Position = new_world_pos;
 			if(child != null)
 				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
 		}

@@ -43,10 +43,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			{
 				for(var column in CardManager.columns)
 				{
-					if(!column.Contains(picked_entity) && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
+					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
+						Card parent = column.Back;
 						column.Add(picked_entity);
-						column.Back.SetChild(picked_entity);
+						parent.SetChild(picked_entity);
 						picked_entity = null;
 						return;
 					}
@@ -71,7 +72,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			if(picked_entity != null)
 			{
-				picked_entity.MovetoWorld(input_axis);
+				picked_entity.MovetoWorld(input_axis - picked_entity.input_offset);
 			}	
 		}
 

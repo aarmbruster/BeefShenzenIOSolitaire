@@ -136,6 +136,7 @@ namespace BeefShenzenIOSolitaire
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(i);
+				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
 				card.Position = float2(i * 152.0f + 106, column_y + card.collision.LocalBounds.Height/2);
@@ -146,6 +147,7 @@ namespace BeefShenzenIOSolitaire
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(i + 8);
+				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
 				card.Position = float2(i * 152.0f + 106, single_y + card.collision.LocalBounds.Height/2);
@@ -156,6 +158,7 @@ namespace BeefShenzenIOSolitaire
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(i + 11);
+				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
 				card.Position = float2(i * 152.0f + 866, single_y + card.collision.LocalBounds.Height/2);
@@ -164,6 +167,7 @@ namespace BeefShenzenIOSolitaire
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
 				let col = GetColumn(14);
+				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
 				card.Position = float2(674, single_y + card.collision.LocalBounds.Height/2);
@@ -179,6 +183,7 @@ namespace BeefShenzenIOSolitaire
 				let parent = col[col.Count - 1];
 
 				Card card = cards[card_index];
+				card.column = col;
 				card.SetDepth((uint8)col.Count + 1);
 				col.Add(card);
 

@@ -1,6 +1,7 @@
 using Atma;
 using BeefShenzenIOSolitaire;
 using Atma.Entities.Components;
+using System.Collections;
 using System;
 
 namespace BeefShenzenIOSolitaire.Entities
@@ -50,7 +51,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		public CollisionComponent collision;
 
 		public  CardState card_state = .Stacked;
-		//public Column column;
+		public List<Card> column;
 
 		private Sprite card_back;
 		private Sprite card_front;
@@ -142,7 +143,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		public override void SetChild(Entity new_child)
 		{
 			base.SetChild(new_child);
-			new_child.Position = this.Position + GetChildOffset((Card)new_child);
+			new_child.MovetoWorld(this.Position + GetChildOffset((Card)new_child));
+			new_child.SetDepth(this.Depth + 2);
 		}
 
 		public virtual void SetState(CardState new_state)
