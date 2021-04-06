@@ -7,6 +7,7 @@ namespace Atma
 		public float2 input_offset {get; protected set;}
 
 		public Entity child {get; private set;}
+		public Entity parent{get; private set;}
 
 		public virtual void OnCursorEnter() { }
 
@@ -24,6 +25,11 @@ namespace Atma
 		public void RemoveChild()
 		{
 			child = null;
+		}
+
+		public virtual void SetParent(Entity new_parent)
+		{
+			parent = new_parent;
 		}
 
 		public void SetDepth(float in_depth)

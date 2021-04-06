@@ -60,6 +60,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		private bool isMousedOver = false;
 		private bool isMovable = false;
 		private bool isPickedUp = false;
+		public float2 picked_up_pos{get; private set;}
 
 		public this(CardType card_type, String name) : base (name)
 		{
@@ -85,10 +86,30 @@ namespace BeefShenzenIOSolitaire.Entities
 			return CardManager.card_offset;
 		}
 
+		public void SetColumn(List<Card> in_column)
+		{
+			if(column != null)
+				column.Remove(this);
+
+			column = in_column;
+			column.Add(this);
+			float depth = column.Count;
+			this.SetDepth(depth);
+
+			if(child != null)
+				((Card)child).SetColumn(in_column);
+		}
+
 		public override void OnPickedUp(uint8 in_depth, float2 input_offset)
 		{
 			base.OnPickedUp(in_depth, input_offset);
 			card_state = .PickedUp;
+			picked_up_pos = this.Position;
+		}
+
+		public void OnDropped()
+		{
+			card_state = .Stacked;
 		}
 
 		protected override void OnUpdate()
@@ -144,7 +165,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			base.SetChild(new_child);
 			new_child.MovetoWorld(this.Position + GetChildOffset((Card)new_child));
-			new_child.SetDepth(this.Depth + 2);
+			new_child.SetDepth(this.Depth + 1);
 		}
 
 		public virtual void SetState(CardState new_state)

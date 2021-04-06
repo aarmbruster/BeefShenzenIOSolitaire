@@ -188,6 +188,7 @@ namespace BeefShenzenIOSolitaire
 				col.Add(card);
 
 				parent.SetChild(card);
+				card.SetParent(parent);
 				
 				//card.column = column;
 

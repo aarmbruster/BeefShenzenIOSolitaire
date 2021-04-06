@@ -45,13 +45,20 @@ namespace BeefShenzenIOSolitaire.Entities
 				{
 					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
+						picked_entity.column.Remove(picked_entity);
+						picked_entity.parent.RemoveChild();
 						Card parent = column.Back;
-						column.Add(picked_entity);
+						picked_entity.SetParent(parent);
+						picked_entity.SetColumn(column);
 						parent.SetChild(picked_entity);
+						picked_entity.OnDropped();
 						picked_entity = null;
+						
 						return;
 					}
 				}
+				picked_entity.MovetoWorld(picked_entity.picked_up_pos);
+				picked_entity = null;
 			}
 		}
 
