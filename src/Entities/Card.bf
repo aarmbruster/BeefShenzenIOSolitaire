@@ -110,6 +110,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		public void OnDropped()
 		{
 			card_state = .Stacked;
+			if(child!=null)
+				((Card)child).OnDropped();
 		}
 
 		protected override void OnUpdate()

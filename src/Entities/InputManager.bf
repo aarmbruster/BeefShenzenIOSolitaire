@@ -19,30 +19,51 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public void MouseUp() {}
 
-		protected void CheckCardClick()
+		protected void CheckCardClick(Atma.MouseButtons mouse_button)
 		{
-			for(var col in Scene.CollisionComponents)
+			if(mouse_button == .Left)
 			{
-				if(col.WorldBounds.Intersects(input_axis))
+				Card card = null;
+				var highest_depth = -1;
+				for(var col in Scene.CollisionComponents)
 				{
-					Card card = (Card)col.Entity;
-					if(card != null && card.CanPickUp())
+					if(col.WorldBounds.Intersects(input_axis))
 					{
-						picked_entity = card;
-						card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);
+						Card temp = (Card)col.Entity;
+						let current_depth = temp.column.IndexOfAlt<Card>(temp);
+						if(temp != null && temp.CanPickUp() && highest_depth < current_depth)
+						{
+							highest_depth = current_depth;
+							card = temp;
+						}
 					}
-					
-					return;
+				}
+				if(card != null)
+				{
+					picked_entity = card;
+					card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);
+					Console.WriteLine("hello");
+				}
+			} else if(mouse_button == .Right)
+			{
+				for(var col in Scene.CollisionComponents)
+				{
+					if(col.WorldBounds.Intersects(input_axis))
+					{
+						Console.WriteLine("Entity Name: {}", col.Entity.Name);
+						return;
+					}
 				}
 			}
 		}
 
-		protected void CheckCardRelease()
+		protected void CheckCardRelease(Atma.MouseButtons mouse_button)
 		{
-			if(picked_entity != null)
+			if(mouse_button == .Left && picked_entity != null)
 			{
 				for(var column in CardManager.columns)
 				{
+					let highest_depth = -1;
 					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
 						picked_entity.column.Remove(picked_entity);
@@ -58,6 +79,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 				}
 				picked_entity.MovetoWorld(picked_entity.picked_up_pos);
+				picked_entity.OnDropped();
 				picked_entity = null;
 			}
 		}
@@ -68,13 +90,24 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(Core.Input.MousePressed(.Left) && !mouseDown)
 			{
 				mouseDown = true;
-				CheckCardClick();
+				CheckCardClick(.Left);
 			}
 
 			if(Core.Input.MouseReleased(.Left) && mouseDown)
 			{
 				mouseDown = false;
-				CheckCardRelease();
+				CheckCardRelease(.Left);
+			}
+
+			if(Core.Input.MousePressed(.Right) && !mouseDown)
+			{
+				////mouseDown = true;
+				//CheckCardClick(.Right);
+			}
+
+			if(Core.Input.MouseReleased(.Right) && mouseDown)
+			{
+				//mouseDown = false;
 			}
 
 			if(picked_entity != null)
