@@ -31,7 +31,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					{
 						Card temp = (Card)col.Entity;
 						let current_depth = temp.column.IndexOfAlt<Card>(temp);
-						if(temp != null && temp.CanPickUp() && highest_depth < current_depth)
+						if(highest_depth < current_depth && temp != null && temp.CanPickUp())
 						{
 							highest_depth = current_depth;
 							card = temp;
@@ -108,6 +108,14 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(Core.Input.MouseReleased(.Right) && mouseDown)
 			{
 				//mouseDown = false;
+			}
+
+			if(Core.Input.KeyCheck(Atma.Keys.S))
+			{
+				List<Card> sorted_cards = CardManager.Cards();
+				Console.WriteLine("Collision Sort Before");
+				Sort.SortByDepth<Card>(sorted_cards);
+				Console.WriteLine("Collision sort After");
 			}
 
 			if(picked_entity != null)

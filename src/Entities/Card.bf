@@ -48,6 +48,9 @@ namespace BeefShenzenIOSolitaire.Entities
 
 	public abstract class Card : Entity
 	{
+		public Card child {get; private set;}
+		public Card parent{get; private set;}
+
 		public CollisionComponent collision;
 
 		public  CardState card_state = .Stacked;
@@ -100,9 +103,15 @@ namespace BeefShenzenIOSolitaire.Entities
 				((Card)child).SetColumn(in_column);
 		}
 
-		public override void OnPickedUp(uint8 in_depth, float2 input_offset)
+		public virtual void OnPickedUp(uint8 in_depth, float2 input_offset)
 		{
-			base.OnPickedUp(in_depth, input_offset);
+			SetDepth(in_depth);
+			this.input_offset = input_offset;
+			if(child != null)
+			{
+				child.OnPickedUp(in_depth + 1, input_offset);
+			}
+
 			card_state = .PickedUp;
 			picked_up_pos = this.Position;
 		}
@@ -148,12 +157,42 @@ namespace BeefShenzenIOSolitaire.Entities
 			base.OnMouseUp();
 		}
 
+		public bool IsChildNumberOneLess()
+		{
+			if((int)this.card_type > 2 || (int)child.card_type > 2)
+				return false;
+
+			let num_child = (NumberCard)child;
+			let num_card = (NumberCard)this;
+			if(num_child!=null && num_card!=null)
+			{
+				return num_card.card_num - num_child.card_num == 1;
+			}
+			return false;
+		}
+
+		public bool IsChildOffSuite()
+		{
+			int ct = (int)card_type;
+			int cct = (int)child.card_type;
+			return cct < 3 && ct != cct;
+		}
+
+		public bool IsChildPickupValid()
+		{
+			if(child==null)
+				return true;
+			else if(IsChildNumberOneLess() && IsChildOffSuite())
+				return true;
+			return false;
+		}
+
 		public override bool CanPickUp()
 		{
 			switch(card_state)
 			{
 			case .Stacked:
-				return true;
+				return IsChildPickupValid();
 			case .Resolved:
 				return false;
 			case .Temped:
@@ -163,11 +202,17 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
-		public override void SetChild(Entity new_child)
+		public virtual bool SetChild(Card new_child)
 		{
-			base.SetChild(new_child);
-			new_child.MovetoWorld(this.Position + GetChildOffset((Card)new_child));
-			new_child.SetDepth(this.Depth + 1);
+			bool child_was_set = false;
+			if(child == null)
+			{
+				child = new_child;
+				new_child.MovetoWorld(this.Position + GetChildOffset((Card)new_child));
+				new_child.SetDepth(this.Depth + 1);
+				child_was_set = true;
+			}
+			return child_was_set;
 		}
 
 		public virtual void SetState(CardState new_state)
@@ -178,6 +223,28 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual float2 GetChildOffset(Card in_child)
 		{
 			return float2(0, CardManager.card_offset);
+		}
+
+		public void RemoveChild()
+		{
+			child = null;
+		}
+
+		public virtual void SetParent(Card new_parent)
+		{
+			parent = new_parent;
+		}
+
+		public void SetDepth(float in_depth)
+		{
+			this.Depth = in_depth;
+		}
+
+		public void MovetoWorld(float2 new_world_pos)
+		{
+			Position = new_world_pos;
+			if(child != null)
+				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
 		}
 	}
 }

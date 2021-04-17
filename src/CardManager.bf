@@ -76,11 +76,15 @@ namespace BeefShenzenIOSolitaire
 			BaseCardInfo(.Flower, 	"main/flower")
 		))  ~ delete _;
 
-		private List<Card> cards = new List<Card>() ~delete _;
+		private static List<Card> cards = new List<Card>() ~delete _;
 
 		public CardHolder[15] card_holders = .();
 
 
+		public static List<Card> Cards()
+		{
+			return cards;
+		}
 		//public static List<Column> columns = new List<Column>() ~delete _;// ~Release(_);
 		
 		public this()
