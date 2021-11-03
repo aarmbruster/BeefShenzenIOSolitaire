@@ -42,7 +42,6 @@ namespace BeefShenzenIOSolitaire.Entities
 				{
 					picked_entity = card;
 					card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);
-					Console.WriteLine("hello");
 				}
 			} else if(mouse_button == .Right)
 			{
@@ -63,7 +62,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			{
 				for(var column in CardManager.columns)
 				{
-					let highest_depth = -1;
 					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
 						picked_entity.column.Remove(picked_entity);
@@ -73,12 +71,13 @@ namespace BeefShenzenIOSolitaire.Entities
 						picked_entity.SetColumn(column);
 						parent.SetChild(picked_entity);
 						picked_entity.OnDropped();
+						picked_entity.SetDepth(picked_entity.parent.Depth + 1);
 						picked_entity = null;
 						
 						return;
 					}
 				}
-				picked_entity.MovetoWorld(picked_entity.picked_up_pos);
+				picked_entity.MoveToWorld(picked_entity.picked_up_pos);
 				picked_entity.OnDropped();
 				picked_entity = null;
 			}
@@ -120,7 +119,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			if(picked_entity != null)
 			{
-				picked_entity.MovetoWorld(input_axis - picked_entity.input_offset);
+				picked_entity.MoveToWorld(input_axis - picked_entity.input_offset);
 			}	
 		}
 

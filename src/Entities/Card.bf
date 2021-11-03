@@ -58,6 +58,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		private Sprite card_back;
 		private Sprite card_front;
+		private Sprite card_number;
 		private CardType card_type;
 		private String card_name;
 		private bool isMousedOver = false;
@@ -80,6 +81,8 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
 			card_front = Components.Add(new Sprite(Core.Atlas[card_name]));
 			card_front.SetDepth(0.1f);
+			card_number = Components.Add(new Sprite(Core.Atlas["main/number_2"]));
+			card_number.SetDepth(0.2f);
 			collision = Components.Add(new CollisionComponent(true));
 			collision.LocalBounds = card_back.LocalBounds;
 		}
@@ -159,7 +162,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public bool IsChildNumberOneLess()
 		{
-			if((int)this.card_type > 2 || (int)child.card_type > 2)
+			if((int)this.card_type > 2 || (int)child.card_type > 2) // Make sure this and it's child are numbered cards
 				return false;
 
 			let num_child = (NumberCard)child;
@@ -208,7 +211,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(child == null)
 			{
 				child = new_child;
-				new_child.MovetoWorld(this.Position + GetChildOffset((Card)new_child));
+				new_child.MoveToWorld(this.Position + GetChildOffset((Card)new_child));
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;
 			}
@@ -240,11 +243,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			this.Depth = in_depth;
 		}
 
-		public void MovetoWorld(float2 new_world_pos)
+		public void MoveToWorld(float2 new_world_pos)
 		{
 			Position = new_world_pos;
 			if(child != null)
-				child.MovetoWorld(new_world_pos + float2(0.0f, 36.0f));
+				child.MoveToWorld(new_world_pos + float2(0.0f, 36.0f));
 		}
 	}
 }
