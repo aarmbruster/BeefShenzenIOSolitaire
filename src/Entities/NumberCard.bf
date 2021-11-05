@@ -36,7 +36,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_top_num = Components.Add(new Sprite(Core.Atlas[card_nums[card_info.card_num - 1]]));
 			card_top_num.SetDepth(0.2f);
 
-			card_top_num.Y = -100;
+			card_top_num.Y = -101;
 			card_top_num.X = -36;
 
 			//Create bottom card num indicator
@@ -44,15 +44,27 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_bottom_num.SetDepth(0.2f);
 
 			card_bottom_num.SpriteRotation = 0.5f;
-			card_bottom_num.Y = 100;
+			card_bottom_num.Y = 101;
 			card_bottom_num.X = 36;
-
+			
+			top_indicator = Components.Add(GetCardIndicator(card_info.card_type));
+			top_indicator.X = -44;
+			top_indicator.Y = -76f;
+			top_indicator.SetDepth(0.3f);
+			bottom_indicator = Components.Add(GetCardIndicator(card_info.card_type));
+			bottom_indicator.X = 44;
+			bottom_indicator.Y = 76;
+			bottom_indicator.SetDepth(0.3f);
+			bottom_indicator.SpriteRotation = 0.5f;
 
 			if(card_info.card_type == .Bamboo)
 			{
 				card_top_num.Tint = card_bottom_num.Tint = Colors.Green;
 				card_front.Tint = Colors.Green;
-			} else if (card_info.card_type == .Char)
+				bottom_indicator.Tint = Colors.Green;
+				top_indicator.Tint = Colors.Green;
+			}
+			else if (card_info.card_type == .Char)
 			{
 				card_top_num.Tint = card_bottom_num.Tint = Colors.Black;
 			}
@@ -60,25 +72,22 @@ namespace BeefShenzenIOSolitaire.Entities
 			{
 				card_top_num.Tint = card_bottom_num.Tint = Colors.Red;
 			}
-			
+		}
 
-
-
-			//font = Core.DefaultFont;
-			
-			//font = new SpriteFont(texture, glyphs, 'a', 1);
-			
-			//String str = new String();
-			//font.ToString(str);
-			//Console.WriteLine("font: {}", str);
-			//delete(str);
-			
-			//num_sprite = Components.Add(new Sprite(texture));
-
-
-
-			///font.Texture = Components.Add(Core.Atlas["main/"]);
-			//"main/notoserif_cjk_regular"
+		public override Sprite GetCardIndicator(CardType in_card_type)
+		{
+			if(in_card_type == .Char)
+			{
+				return new Sprite(Core.Atlas["main/characters_sm"]);
+			}
+			else if (in_card_type == .Coin)
+			{
+				return new Sprite(Core.Atlas["main/coins_sm"]);
+			}
+			else
+			{
+				return new Sprite(Core.Atlas["main/bamboo_sm"]);
+			}
 		}
 	}
 }

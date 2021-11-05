@@ -6,14 +6,15 @@ namespace BeefShenzenIOSolitaire
 {
 	public class BeefShenzenIOSolitaire : Scene
 	{
-
 		public Player player;
 		public Background background;
 
 		public SpecialButton dragon_green;
 		public SpecialButton dragon_red;
 		public SpecialButton dragon_white;
+
 		private CardManager card_manager = new CardManager()  ~ delete _;
+
 		public this() : base(.ExactFit, Screen.Size)
 		{
 			Time.SetTargetFramerate(60);

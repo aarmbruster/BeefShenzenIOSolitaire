@@ -53,11 +53,14 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public CollisionComponent collision;
 
-		public  CardState card_state = .Stacked;
+		public CardState card_state = .Stacked;
 		public List<Card> column;
 
 		private Sprite card_back;
 		protected Sprite card_front;
+
+		protected Sprite top_indicator;
+		protected Sprite bottom_indicator;
 		
 		private CardType card_type;
 		private String card_name;
@@ -81,7 +84,8 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
 			card_front = Components.Add(new Sprite(Core.Atlas[card_name]));
 			card_front.SetDepth(0.1f);
-			
+
+
 			collision = Components.Add(new CollisionComponent(true));
 			collision.LocalBounds = card_back.LocalBounds;
 		}
@@ -247,6 +251,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			Position = new_world_pos;
 			if(child != null)
 				child.MoveToWorld(new_world_pos + float2(0.0f, 36.0f));
+		}
+
+		public virtual Atma.Sprite GetCardIndicator(CardType in_card_type)
+		{
+			return null;
 		}
 	}
 }

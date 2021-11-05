@@ -9,7 +9,7 @@ namespace BeefShenzenIOSolitaire
 	{
 		static public int Main(String[] args)
 		{
-			return Core.RunInitialScene<BeefShenzenIOSolitaire>("Solitaire", 1279, 804);
+			return Core.RunInitialScene<BeefShenzenIOSolitaire>("Solitaire", 1278, 804);
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace BeefShenzenIOSolitaire
 
 		public readonly static float column_y = 284;
 		public readonly static float single_y = 19;
-		public readonly static float card_offset = 36;
+		public readonly static float card_offset = 35;
 
 		public static List<Card> tip_cards = new List<Card>() ~delete _;
 		public static List<List<Card>> columns = new List<List<Card>>(15) ~delete _;
@@ -85,8 +85,7 @@ namespace BeefShenzenIOSolitaire
 		{
 			return cards;
 		}
-		//public static List<Column> columns = new List<Column>() ~delete _;// ~Release(_);
-		
+
 		public this()
 		{
 
