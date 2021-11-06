@@ -125,6 +125,11 @@ namespace BeefShenzenIOSolitaire.Entities
 		public void OnDropped()
 		{
 			card_state = .Stacked;
+			if(HasParent)
+			{
+				SetDepth(this.parent.Depth + 1);
+			}
+			
 			if(child!=null)
 				((Card)child).OnDropped();
 		}
