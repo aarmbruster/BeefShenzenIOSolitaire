@@ -1,4 +1,4 @@
-
+// 2021 Andrew Armbruster, All Rights Reserved
 namespace BeefShenzenIOSolitaire
 {
 	using System;

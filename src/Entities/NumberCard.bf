@@ -1,11 +1,10 @@
-
+// 2021 Andrew Armbruster, All Rights Reserved
 using System;
 using System.Collections;
 using Atma;
 
 namespace BeefShenzenIOSolitaire.Entities
 {
-	
 	public class NumberCard : Card
 	{
 		public uint8 card_num;
@@ -23,11 +22,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			"main/number_8",
 			"main/number_9"
 		))  ~ delete _;
-
-		//public SpriteFont font ~Release(_);
-		//private Sprite num_sprite;
-		//private List<Atma.SpriteFont.Glyph> glyphs = new List<Atma.SpriteFont.Glyph>() ~delete _;
-		//private Texture texture = new Texture(1024, 1024, TextureFormat.RGBA16F);
 
 		public this(NumberCardInfo card_info) : base (card_info)
 		{
