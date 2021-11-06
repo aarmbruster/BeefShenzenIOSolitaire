@@ -137,6 +137,7 @@ namespace BeefShenzenIOSolitaire
 
 		public void place_cards(Scene scene)
 		{
+			// place the stacked card holders
 			for(int i = 0; i < 8; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
@@ -148,6 +149,7 @@ namespace BeefShenzenIOSolitaire
 				card_holders[i] = card;
 			}	
 
+			// place the temp card holders
 			for(int i = 0; i < 3; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
@@ -159,6 +161,7 @@ namespace BeefShenzenIOSolitaire
 				card_holders[i + 8] = card;
 			}
 
+			// place the resolved card holders
 			for(int i = 0; i < 3; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
@@ -195,13 +198,6 @@ namespace BeefShenzenIOSolitaire
 				parent.SetChild(card);
 				card.SetParent(parent);
 				
-				//card.column = column;
-
-				//card.Depth = scd() + columns[col_index].cards.Count;
-				//let card_count = columns[col_index].cards.Count;
-				//let card_height = card.collision.LocalBounds.Height;
-				//let y = column_y + card_height * 0.5f + card_count * card_offset;
-				//card.Position = float2(col_index * 152.0f + 106, y);
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
 			}
