@@ -9,7 +9,7 @@ namespace BeefShenzenIOSolitaire.Entities
 	public class InputManager : Entity
 	{
 		public float2 input_axis;
-		public Entity focused_entity;
+		//public Entity focused_entity;
 
 		private bool mouseDown = false;
 
@@ -62,19 +62,23 @@ namespace BeefShenzenIOSolitaire.Entities
 			{
 				for(var column in CardManager.columns)
 				{
+					// check collision
 					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
-						picked_entity.column.Remove(picked_entity);
-						picked_entity.parent.RemoveChild();
-						Card parent = column.Back;
-						picked_entity.SetParent(parent);
-						picked_entity.SetColumn(column);
-						parent.SetChild(picked_entity);
-						picked_entity.OnDropped();
-						picked_entity.SetDepth(picked_entity.parent.Depth + 1);
-						picked_entity = null;
+						if(picked_entity.CanBeDroppedOn(column.Back))
+						{
+							picked_entity.column.Remove(picked_entity);
+							picked_entity.parent.RemoveChild();
+							Card parent = column.Back;
+							picked_entity.SetParent(parent);
+							picked_entity.SetColumn(column);
+							parent.SetChild(picked_entity);
+							picked_entity.OnDropped();
+							picked_entity.SetDepth(picked_entity.parent.Depth + 1);
+							picked_entity = null;
+							return;
+						}
 						
-						return;
 					}
 				}
 				picked_entity.MoveToWorld(picked_entity.picked_up_pos);
@@ -130,18 +134,18 @@ namespace BeefShenzenIOSolitaire.Entities
 			{
 				if(col.WorldBounds.Intersects(input_axis))
 				{
-					if(col.Entity == focused_entity)
+					if(col.Entity == CardManager.focused_entity)
 						return;
-					if(focused_entity != null)
-						focused_entity.OnCursorExit();
-					focused_entity = col.Entity;
+					if(CardManager.focused_entity != null)
+						CardManager.focused_entity.OnCursorExit();
+					CardManager.focused_entity = col.Entity;
 					col.Entity.OnCursorEnter();
 					return;
 				}
 			}
-			if(focused_entity != null)
-				focused_entity.OnCursorExit();
-			focused_entity = null;
+			if(CardManager.focused_entity != null)
+				CardManager.focused_entity.OnCursorExit();
+			CardManager.focused_entity = null;
 		}
 	}
 }

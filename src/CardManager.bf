@@ -7,6 +7,8 @@ namespace BeefShenzenIOSolitaire
 {
 	public class CardManager
 	{
+		public static Entity focused_entity;
+
 		private static uint8 start_card_depth = 64;
 		private static uint8 picked_card_depth = 128;
 		
@@ -100,7 +102,7 @@ namespace BeefShenzenIOSolitaire
 			columns.Clear();
 		}
 
-		private List<Card> GetColumn(int i)
+		private List<Card> get_column(int i)
 		{
 			return columns[i];
 		}
@@ -138,7 +140,7 @@ namespace BeefShenzenIOSolitaire
 			for(int i = 0; i < 8; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
-				let col = GetColumn(i);
+				let col = get_column(i);
 				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
@@ -149,7 +151,7 @@ namespace BeefShenzenIOSolitaire
 			for(int i = 0; i < 3; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
-				let col = GetColumn(i + 8);
+				let col = get_column(i + 8);
 				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
@@ -160,7 +162,7 @@ namespace BeefShenzenIOSolitaire
 			for(int i = 0; i < 3; i++)
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
-				let col = GetColumn(i + 11);
+				let col = get_column(i + 11);
 				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
@@ -169,7 +171,7 @@ namespace BeefShenzenIOSolitaire
 			}
 			{
 				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
-				let col = GetColumn(14);
+				let col = get_column(14);
 				card.column = col;
 				col.Add(card);
 				card.Depth = 1;
@@ -182,7 +184,7 @@ namespace BeefShenzenIOSolitaire
 				int col_index = i%8;
 				int card_index = i;
 				
-				let col = GetColumn(col_index);
+				let col = get_column(col_index);
 				let parent = col[col.Count - 1];
 
 				Card card = cards[card_index];

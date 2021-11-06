@@ -83,5 +83,23 @@ namespace BeefShenzenIOSolitaire.Entities
 				return new Sprite(Core.Atlas["main/bamboo_sm"]);
 			}
 		}
+
+		public override bool CanBeDroppedOn(Card new_parent)
+		{
+			if(is_parent_holder(new_parent))
+			{
+				return true;
+			}
+
+			bool is_number_card = (int)new_parent.get_card_type() < 3;
+			if(is_number_card)
+			{
+				NumberCard parent_num = (NumberCard)new_parent;
+
+				return IsDifferentSuite(new_parent) && parent_num.card_num - this.card_num == 1;
+			}
+
+			return false;
+		}
 	}
 }

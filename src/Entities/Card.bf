@@ -122,6 +122,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			picked_up_pos = this.Position;
 		}
 
+		public virtual bool CanBeDroppedOn(Card new_parent)
+		{
+			return IsDifferentSuite(new_parent);
+		}
+
 		public void OnDropped()
 		{
 			card_state = .Stacked;
@@ -189,11 +194,18 @@ namespace BeefShenzenIOSolitaire.Entities
 			return cct < 3 && ct != cct;
 		}
 
+		public bool IsDifferentSuite(Card b)
+		{
+			int ct = (int)card_type;
+			int cct = (int)b.card_type;
+			return cct < 3 && ct != cct; 
+		}
+
 		public bool IsChildPickupValid()
 		{
 			if(child==null)
 				return true;
-			else if(IsChildNumberOneLess() && IsChildOffSuite())
+			else if(child.IsChildPickupValid() && IsChildNumberOneLess() && IsChildOffSuite())
 				return true;
 			return false;
 		}
@@ -211,6 +223,16 @@ namespace BeefShenzenIOSolitaire.Entities
 			case .PickedUp:
 				return false;
 			}
+		}
+
+		public CardType get_card_type()
+		{
+			return card_type;
+		}
+
+		public bool is_parent_holder(Card new_parent)
+		{
+			return new_parent.card_type == .Holder;
 		}
 
 		public virtual bool SetChild(Card new_child)
