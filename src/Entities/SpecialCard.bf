@@ -47,5 +47,19 @@ namespace BeefShenzenIOSolitaire.Entities
 				return new Sprite(Core.Atlas["main/flower_sm"]);
 			}
 		}
+
+		public override bool CanBeDroppedOn(Card new_parent)
+		{
+			if(new_parent.GetCardType() == .Holder)
+			{
+				let holder_parent = (CardHolder)new_parent;
+				if(holder_parent.holder_type != .Rose && holder_parent.holder_type != .Resolved)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }

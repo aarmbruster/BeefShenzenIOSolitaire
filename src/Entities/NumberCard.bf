@@ -86,17 +86,31 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public override bool CanBeDroppedOn(Card new_parent)
 		{
-			if(is_parent_holder(new_parent))
+			// is the parent temped
+			if(new_parent.GetState() == .Temped)
+			{
+				return false;
+			}
+
+			// is parent a holder card
+			if(IsParentHolder(new_parent) && !this.HasChild())
 			{
 				return true;
 			}
 
-			bool is_number_card = (int)new_parent.get_card_type() < 3;
+			bool is_number_card = (int)new_parent.GetCardType() < 3;
 			if(is_number_card)
 			{
 				NumberCard parent_num = (NumberCard)new_parent;
 
-				return IsDifferentSuite(new_parent) && parent_num.card_num - this.card_num == 1;
+				// checking a resolved stacks
+				if(this.IsSameSuite(new_parent) && new_parent.GetState() == .Resolved && this.card_num - parent_num.card_num == 1)
+				{
+					return true;
+				}
+
+				// checking a field stack
+				return IsDifferentSuite(new_parent) && parent_num.card_num - this.card_num == 1 && new_parent.GetState() != .Temped;
 			}
 
 			return false;

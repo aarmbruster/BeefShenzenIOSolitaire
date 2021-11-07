@@ -20,6 +20,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 	enum CardState
 	{
+		None,
 		Stacked,
 		Temped,
 		Resolved,
@@ -53,7 +54,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public CollisionComponent collision;
 
-		public CardState card_state = .Stacked;
+		protected CardState card_state = .None;
 		public List<Card> column;
 
 		private Sprite card_back;
@@ -124,15 +125,23 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public virtual bool CanBeDroppedOn(Card new_parent)
 		{
-			return IsDifferentSuite(new_parent);
+			return true;
+			//return IsDifferentSuite(new_parent);
 		}
 
 		public void OnDropped()
 		{
-			card_state = .Stacked;
+			SetState(.Stacked);
 			if(HasParent)
 			{
 				SetDepth(this.parent.Depth + 1);
+				if(parent.GetCardType() == .Holder)
+				{
+					if(((CardHolder)parent).holder_type == .Temp)
+					{
+						SetState(.Temped);
+					}
+				}
 			}
 			
 			if(child!=null)
@@ -201,6 +210,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			return cct < 3 && ct != cct; 
 		}
 
+		public bool IsSameSuite(Card b)
+		{
+			return card_type == b.GetCardType();
+		}	
+
 		public bool IsChildPickupValid()
 		{
 			if(child==null)
@@ -210,10 +224,17 @@ namespace BeefShenzenIOSolitaire.Entities
 			return false;
 		}
 
+		public bool HasChild()
+		{
+			return child != null;
+		}
+
 		public override bool CanPickUp()
 		{
-			switch(card_state)
+			switch(GetState())
 			{
+			case .None:
+				return true;
 			case .Stacked:
 				return IsChildPickupValid();
 			case .Resolved:
@@ -225,12 +246,17 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
-		public CardType get_card_type()
+		public CardType GetCardType()
 		{
 			return card_type;
 		}
 
-		public bool is_parent_holder(Card new_parent)
+		public void Drop(List<Card> column, Card new_parent)
+		{
+
+		}
+
+		public bool IsParentHolder(Card new_parent)
 		{
 			return new_parent.card_type == .Holder;
 		}
@@ -251,6 +277,11 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual void SetState(CardState new_state)
 		{
 			this.card_state = new_state;
+		}
+
+		public CardState GetState()
+		{
+			return card_state;
 		}
 
 		public virtual float2 GetChildOffset(Card in_child)

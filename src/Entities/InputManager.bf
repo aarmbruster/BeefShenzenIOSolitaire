@@ -65,7 +65,8 @@ namespace BeefShenzenIOSolitaire.Entities
 					// check collision
 					if(column != picked_entity.column && column.Back.collision.WorldBounds.Intersects(picked_entity.collision.WorldBounds))
 					{
-						if(picked_entity.CanBeDroppedOn(column.Back))
+						bool can_be_dropped_on = picked_entity.CanBeDroppedOn(column.Back);
+						if(can_be_dropped_on)
 						{
 							picked_entity.column.Remove(picked_entity);
 							picked_entity.parent.RemoveChild();

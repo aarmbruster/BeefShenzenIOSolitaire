@@ -140,7 +140,7 @@ namespace BeefShenzenIOSolitaire
 			// place the stacked card holders
 			for(int i = 0; i < 8; i++)
 			{
-				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder", .Stack));
 				let col = get_column(i);
 				card.column = col;
 				col.Add(card);
@@ -152,7 +152,7 @@ namespace BeefShenzenIOSolitaire
 			// place the temp card holders
 			for(int i = 0; i < 3; i++)
 			{
-				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder", .Temp));
 				let col = get_column(i + 8);
 				card.column = col;
 				col.Add(card);
@@ -164,7 +164,7 @@ namespace BeefShenzenIOSolitaire
 			// place the resolved card holders
 			for(int i = 0; i < 3; i++)
 			{
-				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder", .Resolved));
 				let col = get_column(i + 11);
 				card.column = col;
 				col.Add(card);
@@ -172,8 +172,10 @@ namespace BeefShenzenIOSolitaire
 				card.Position = float2(i * 152.0f + 866, single_y + card.collision.LocalBounds.Height/2);
 				card_holders[i + 11] = card;
 			}
+
+			// place the flower card holder
 			{
-				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder"));
+				let card = scene.AddEntity(new CardHolder(.Holder, "Card Holder", .Rose));
 				let col = get_column(14);
 				card.column = col;
 				col.Add(card);
@@ -182,6 +184,7 @@ namespace BeefShenzenIOSolitaire
 				card_holders[14] = card;
 			}
 
+			// place the cards
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
 				int col_index = i%8;
@@ -191,6 +194,7 @@ namespace BeefShenzenIOSolitaire
 				let parent = col[col.Count - 1];
 
 				Card card = cards[card_index];
+				card.SetState(.Stacked);
 				card.column = col;
 				card.SetDepth((uint8)col.Count + 1);
 				col.Add(card);
