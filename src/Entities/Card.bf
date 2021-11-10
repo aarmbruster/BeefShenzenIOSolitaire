@@ -141,6 +141,11 @@ namespace BeefShenzenIOSolitaire.Entities
 					{
 						SetState(.Temped);
 					}
+
+					if(((CardHolder)parent).holder_type == .Resolved)
+					{
+						SetState(.Resolved);
+					}
 				}
 			}
 			

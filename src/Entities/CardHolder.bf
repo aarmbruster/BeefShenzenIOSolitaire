@@ -3,8 +3,6 @@ using System;
 
 namespace BeefShenzenIOSolitaire.Entities
 {
-
-
 	public class CardHolder : Card
 	{
 		public enum HolderType

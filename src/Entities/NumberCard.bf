@@ -104,7 +104,8 @@ namespace BeefShenzenIOSolitaire.Entities
 				NumberCard parent_num = (NumberCard)new_parent;
 
 				// checking a resolved stacks
-				if(this.IsSameSuite(new_parent) && new_parent.GetState() == .Resolved && this.card_num - parent_num.card_num == 1)
+				int16 card_num_delta = this.card_num - parent_num.card_num;
+				if(this.IsSameSuite(new_parent) && new_parent.GetState() == .Resolved && card_num_delta == 1)
 				{
 					return true;
 				}
@@ -114,6 +115,21 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 
 			return false;
+		}
+
+		public override float GetChildOffset()
+		{
+			if(this.card_state == .Resolved)
+				return float(0.f);
+			else
+				return base.GetChildOffset();
+		}
+
+		public override float2 GetChildOffset(Card in_child)
+		{
+			if(this.card_state == .Resolved)
+				return float2.Zero;
+			return base.GetChildOffset(in_child);
 		}
 	}
 }
