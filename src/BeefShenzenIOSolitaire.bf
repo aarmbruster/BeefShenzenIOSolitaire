@@ -39,7 +39,7 @@ namespace BeefShenzenIOSolitaire
 			int rand_time = DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Month + DateTime.Now.Second;
 
 			card_manager.create_columns(this);
-
+			card_manager.setup_holders(this);
 			Random rand = new Random(rand_time);
 			card_manager.shuffle_cards(rand.Next(0, 60000));
 			delete(rand);
@@ -49,9 +49,9 @@ namespace BeefShenzenIOSolitaire
 			this.Camera.AddRenderer(new SceneRenderer(this));
 		}
 
-		public override void FixedUpdate()
+		public CardManager get_card_manager()
 		{
-			base.FixedUpdate();
+			return card_manager;
 		}
 	}
 }

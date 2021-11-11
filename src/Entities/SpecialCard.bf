@@ -61,5 +61,10 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			return false;
 		}
+
+		public override void reset()
+		{
+			base.reset();
+		}
 	}
 }

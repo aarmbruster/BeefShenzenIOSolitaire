@@ -7,6 +7,8 @@ namespace BeefShenzenIOSolitaire
 {
 	public class CardManager
 	{
+		public static Scene game_scene {get; protected set;}
+
 		public static Entity focused_entity;
 
 		private static uint8 start_card_depth = 64;
@@ -26,7 +28,6 @@ namespace BeefShenzenIOSolitaire
 		public readonly static float single_y = 19;
 		public readonly static float card_offset = 35;
 
-		public static List<Card> tip_cards = new List<Card>() ~delete _;
 		public static List<List<Card>> columns = new List<List<Card>>(15) ~delete _;
 
 		private static readonly List<NumberCardInfo> num_cards = new List<NumberCardInfo>(NumberCardInfo[?](
@@ -80,8 +81,7 @@ namespace BeefShenzenIOSolitaire
 
 		private static List<Card> cards = new List<Card>() ~delete _;
 
-		public CardHolder[15] card_holders = .();
-
+		public static CardHolder[15] card_holders = .();
 
 		public static List<Card> Cards()
 		{
@@ -135,8 +135,9 @@ namespace BeefShenzenIOSolitaire
 			}
 		}
 
-		public void place_cards(Scene scene)
+		public void setup_holders(Scene scene)
 		{
+			game_scene = scene;
 			// place the stacked card holders
 			for(int i = 0; i < 8; i++)
 			{
@@ -183,7 +184,10 @@ namespace BeefShenzenIOSolitaire
 				card.Position = float2(674, single_y + card.collision.LocalBounds.Height/2);
 				card_holders[14] = card;
 			}
+		}
 
+		public void place_cards(Scene scene)
+		{
 			// place the cards
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
@@ -204,6 +208,24 @@ namespace BeefShenzenIOSolitaire
 				
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
+			}
+		}
+
+		public static void reset_cards()
+		{
+			for(Card card in cards)
+			{
+				card.reset();
+			}
+
+			for(List<Card> column in columns)
+			{
+				column.Capacity = 1;
+			}
+
+			for(Card card in card_holders)
+			{
+				card.reset();
 			}
 		}
 	}

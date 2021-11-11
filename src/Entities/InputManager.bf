@@ -9,15 +9,13 @@ namespace BeefShenzenIOSolitaire.Entities
 	public class InputManager : Entity
 	{
 		public float2 input_axis;
-		//public Entity focused_entity;
-
 		private bool mouseDown = false;
-
 		private Card picked_entity;
 
 		public void MouseDown() {}
-
 		public void MouseUp() {}
+
+		private bool keyDown = false;
 
 		protected void CheckCardClick(Atma.MouseButtons mouse_button)
 		{
@@ -91,6 +89,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
+
 			if(Core.Input.MousePressed(.Left) && !mouseDown)
 			{
 				mouseDown = true;
@@ -114,7 +113,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				//mouseDown = false;
 			}
 
-			if(Core.Input.KeyCheck(Atma.Keys.S))
+			if(Core.Input.KeyCheck(Atma.Keys.C))
 			{
 				List<Card> sorted_cards = CardManager.Cards();
 				Console.WriteLine("Collision Sort Before");
@@ -144,6 +143,20 @@ namespace BeefShenzenIOSolitaire.Entities
 					return;
 				}
 			}
+			if(Core.Input.KeyCheck(Atma.Keys.S) && !keyDown)
+			{
+				Console.WriteLine("hello");
+				keyDown = true;
+				BeefShenzenIOSolitaire scene = (BeefShenzenIOSolitaire)CardManager.game_scene;
+				CardManager.reset_cards();
+				scene.get_card_manager().shuffle_cards(0);
+				scene.get_card_manager().place_cards(scene);
+			}
+			else if(!Core.Input.KeyCheck(Atma.Keys.S) && keyDown)
+			{
+				keyDown = false;
+			}
+
 			if(CardManager.focused_entity != null)
 				CardManager.focused_entity.OnCursorExit();
 			CardManager.focused_entity = null;

@@ -49,15 +49,15 @@ namespace BeefShenzenIOSolitaire.Entities
 
 	public abstract class Card : Entity
 	{
-		public Card child {get; private set;}
-		public Card parent{get; private set;}
+		public Card child {get; protected set;}
+		public Card parent{get; protected set;}
 
 		public CollisionComponent collision;
 
 		protected CardState card_state = .None;
 		public List<Card> column;
 
-		private Sprite card_back;
+		protected Sprite card_back;
 		protected Sprite card_front;
 
 		protected Sprite top_indicator;
@@ -85,7 +85,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
 			card_front = Components.Add(new Sprite(Core.Atlas[card_name]));
 			card_front.SetDepth(0.1f);
-
 
 			collision = Components.Add(new CollisionComponent(true));
 			collision.LocalBounds = card_back.LocalBounds;
@@ -126,7 +125,6 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual bool CanBeDroppedOn(Card new_parent)
 		{
 			return true;
-			//return IsDifferentSuite(new_parent);
 		}
 
 		public void OnDropped()
@@ -272,7 +270,11 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(child == null)
 			{
 				child = new_child;
-				new_child.MoveToWorld(this.Position + GetChildOffset((Card)new_child));
+				float2 thisPos = this.Position;
+				float2 offset = GetChildOffset((Card)new_child);
+				float2 new_pos = this.Position + offset;
+				Console.WriteLine("thisPos: {0} 	|	new_pos: {1}	|	offset: {2}", thisPos, new_pos, offset);
+				new_child.MoveToWorld(new_pos);
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;
 			}
@@ -319,6 +321,18 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual Atma.Sprite GetCardIndicator(CardType in_card_type)
 		{
 			return null;
+		}
+
+		public virtual void reset()
+		{
+			if(this.column != null && this.card_type != .Holder)
+			{
+				this.column.Remove(this);
+				this.column = null;
+			}
+				
+			this.child = null;
+			this.parent = null;
 		}
 	}
 }
