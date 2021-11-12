@@ -127,7 +127,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			return true;
 		}
 
-		public void OnDropped()
+		public virtual void OnDropped()
 		{
 			SetState(.Stacked);
 			if(HasParent)
@@ -149,6 +149,8 @@ namespace BeefShenzenIOSolitaire.Entities
 			
 			if(child!=null)
 				((Card)child).OnDropped();
+
+			CardManager.check_ends();
 		}
 
 		protected override void OnUpdate()
@@ -254,14 +256,18 @@ namespace BeefShenzenIOSolitaire.Entities
 			return card_type;
 		}
 
-		public void Drop(List<Card> column, Card new_parent)
-		{
-
-		}
-
 		public bool IsParentHolder(Card new_parent)
 		{
 			return new_parent.card_type == .Holder;
+		}
+
+		public bool IsHolderResolvedStack(Card new_parent)
+		{
+			if(IsParentHolder(new_parent))
+			{
+				return ((CardHolder)new_parent).holder_type == .Resolved;
+			}
+			return false;
 		}
 
 		public virtual bool SetChild(Card new_child)
@@ -299,6 +305,11 @@ namespace BeefShenzenIOSolitaire.Entities
 		public void RemoveChild()
 		{
 			child = null;
+		}
+
+		public bool IsNumbercard()
+		{
+			return GetCardType() == .Bamboo || GetCardType() == .Char || GetCardType() == .Coin;
 		}
 
 		public virtual void SetParent(Card new_parent)

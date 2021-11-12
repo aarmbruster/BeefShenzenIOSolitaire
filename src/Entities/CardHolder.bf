@@ -17,7 +17,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public this(CardType card_type, String name, HolderType holder_type) : base(card_type, name)
 		{
-			card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
+			//card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
 			this.holder_type = holder_type;
 		}
 

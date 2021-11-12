@@ -48,23 +48,48 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
+		public override void OnDropped()
+		{
+			if(HasParent)
+			{
+				if(parent.GetCardType() == .Holder)
+				{
+					if(((CardHolder)parent).holder_type == .Rose)
+					{
+						this.SetState(.Resolved);
+					}
+	
+					if(((CardHolder)parent).holder_type == .Temp)
+					{
+						SetState(.Temped);
+					}
+				}
+			}
+			CardManager.check_ends();
+		}
+
 		public override bool CanBeDroppedOn(Card new_parent)
 		{
 			if(new_parent.GetCardType() == .Holder)
 			{
 				let holder_parent = (CardHolder)new_parent;
-				if(holder_parent.holder_type != .Rose && holder_parent.holder_type != .Resolved)
+				if(holder_parent.holder_type == .Resolved)
 				{
-					return true;
+					return false;
+				}
+
+				if(holder_parent.holder_type != .Rose && this.GetCardType() == .Flower)
+				{
+					return false;
+				}
+
+				if(holder_parent.holder_type == .Rose && this.GetCardType() != .Flower)
+				{
+					return false;
 				}
 			}
 
-			return false;
-		}
-
-		public override void reset()
-		{
-			base.reset();
+			return true;
 		}
 	}
 }

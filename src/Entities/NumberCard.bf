@@ -7,7 +7,7 @@ namespace BeefShenzenIOSolitaire.Entities
 {
 	public class NumberCard : Card
 	{
-		public uint8 card_num;
+		public uint8 card_num {public get; protected set;};
 		private Sprite card_top_num;
 		private Sprite card_bottom_num;
 
@@ -95,6 +95,10 @@ namespace BeefShenzenIOSolitaire.Entities
 			// is parent a holder card
 			if(IsParentHolder(new_parent) && !this.HasChild())
 			{
+				if(new_parent.IsHolderResolvedStack(new_parent))
+				{
+					return false;
+				}
 				return true;
 			}
 
