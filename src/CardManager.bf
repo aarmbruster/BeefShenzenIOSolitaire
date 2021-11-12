@@ -242,47 +242,30 @@ namespace BeefShenzenIOSolitaire
 					NumberCard num_card = (NumberCard)tip;
 					if(num_card.card_num == 1)
 					{
-						check_again = true;
 						if(num_card.GetCardType() == .Bamboo)
 						{
-							num_card.column.Remove(num_card);
-							num_card.parent.RemoveChild();
 							List<Card> column = columns[11];
-							Card parent = column.Back;
-							num_card.SetParent(parent);
-							num_card.SetColumn(column);
-							parent.SetChild(num_card);
-							num_card.OnDropped();
-							num_card.SetDepth(num_card.parent.Depth + 1);
+							num_card.Drop(column.Back);
 						}
 
 						if(num_card.GetCardType() == .Char)
 						{
-							num_card.column.Remove(num_card);
-							num_card.parent.RemoveChild();
-							List<Card> column = columns[12];
-							Card parent = column.Back;
-							num_card.SetParent(parent);
-							num_card.SetColumn(column);
-							parent.SetChild(num_card);
-							num_card.OnDropped();
-							num_card.SetDepth(num_card.parent.Depth + 1);
+							num_card.Drop(columns[12].Back);
 						}
 
 						if(num_card.GetCardType() == .Coin)
 						{
-							num_card.column.Remove(num_card);
-							num_card.parent.RemoveChild();
-							List<Card> column = columns[13];
-							Card parent = column.Back;
-							num_card.SetParent(parent);
-							num_card.SetColumn(column);
-							parent.SetChild(num_card);
-							num_card.OnDropped();
-							num_card.SetDepth(num_card.parent.Depth + 1);
+							num_card.Drop(columns[13].Back);
 						}
 
+						check_again = true;
 					}
+				}
+
+				if(tip.GetCardType() == .Flower)
+				{
+					tip.Drop(columns[14].Back);
+					check_again = true;
 				}
 			}
 

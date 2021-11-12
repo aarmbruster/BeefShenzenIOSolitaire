@@ -102,8 +102,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				return true;
 			}
 
-			bool is_number_card = (int)new_parent.GetCardType() < 3;
-			if(is_number_card)
+			if(new_parent.IsNumbercard())
 			{
 				NumberCard parent_num = (NumberCard)new_parent;
 
@@ -119,6 +118,41 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 
 			return false;
+		}
+
+		public override void OnDropped()
+		{
+			SetState(.Stacked);
+			if(IsParented)
+			{
+				//SetDepth(this.parent.Depth + 1);
+				if(parent.GetCardType() == .Holder)
+				{
+					if(((CardHolder)parent).holder_type == .Temp)
+					{
+						SetState(.Temped);
+					}
+
+					if(((CardHolder)parent).holder_type == .Resolved)
+					{
+						SetState(.Resolved);
+					}
+				}
+
+				if(parent.IsNumbercard())
+				{
+					NumberCard num_parent = (NumberCard)parent;
+					if(this.card_num - num_parent.card_num == 1)
+					{
+						SetState(.Resolved);
+					}
+				}
+			}
+
+			if(child!=null)
+				((Card)child).OnDropped();
+
+			CardManager.check_ends();
 		}
 
 		public override float GetChildOffset()

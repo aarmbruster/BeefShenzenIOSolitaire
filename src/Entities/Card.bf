@@ -52,6 +52,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		public Card child {get; protected set;}
 		public Card parent{get; protected set;}
 
+		public bool IsParented => parent != null;
+
 		public CollisionComponent collision;
 
 		protected CardState card_state = .None;
@@ -125,6 +127,18 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual bool CanBeDroppedOn(Card new_parent)
 		{
 			return true;
+		}
+
+		public void Drop(Card new_parent)
+		{
+			this.column.Remove(this);
+			this.parent.RemoveChild();
+			List<Card> column = new_parent.column;
+			this.SetParent(new_parent);
+			this.SetColumn(column);
+			new_parent.SetChild(this);
+			this.OnDropped();
+			this.SetDepth(new_parent.Depth + 1);
 		}
 
 		public virtual void OnDropped()
@@ -236,12 +250,14 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public override bool CanPickUp()
 		{
+			bool isChildValidPickup = IsChildPickupValid();
+
 			switch(GetState())
 			{
 			case .None:
 				return true;
 			case .Stacked:
-				return IsChildPickupValid();
+				return isChildValidPickup;
 			case .Resolved:
 				return false;
 			case .Temped:
@@ -284,6 +300,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;
 			}
+			child = new_child;
 			return child_was_set;
 		}
 

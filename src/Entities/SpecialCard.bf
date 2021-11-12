@@ -50,19 +50,23 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public override void OnDropped()
 		{
-			if(HasParent)
+			if(IsParented)
 			{
 				if(parent.GetCardType() == .Holder)
 				{
-					if(((CardHolder)parent).holder_type == .Rose)
+					CardHolder parent_holder = (CardHolder)parent;
+					if(parent_holder.holder_type == .Rose)
 					{
-						this.SetState(.Resolved);
+						SetState(.Resolved);
 					}
-	
-					if(((CardHolder)parent).holder_type == .Temp)
+						else if(parent_holder.holder_type == .Temp)
 					{
 						SetState(.Temped);
 					}
+				}
+				else
+				{
+					SetState(.Stacked);
 				}
 			}
 			CardManager.check_ends();
@@ -87,9 +91,11 @@ namespace BeefShenzenIOSolitaire.Entities
 				{
 					return false;
 				}
+
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 	}
 }
