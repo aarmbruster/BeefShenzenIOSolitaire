@@ -96,11 +96,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			collision.LocalBounds = card_front.LocalBounds;
 		}
 
-		/*public virtual float GetChildOffset()
-		{
-			return CardManager.card_offset;
-		}*/
-
 		public void SetColumn(List<Card> in_column)
 		{
 			if(column != null)
@@ -135,8 +130,10 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public void Drop(Card new_parent)
 		{
-			this.column.Remove(this);
-			this.parent.RemoveChild();
+			if(this.column!=null)
+				this.column.Remove(this);
+			if(this.parent!=null)
+				this.parent.RemoveChild();
 			List<Card> column = new_parent.column;
 			this.SetParent(new_parent);
 			this.SetColumn(column);
@@ -169,11 +166,6 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 				}
 			}
-			
-			/*if(child!=null)
-				((Card)child).OnDropped();*/
-
-			
 		}
 
 		protected override void OnUpdate()
@@ -282,10 +274,8 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(child == null)
 			{
 				child = new_child;
-				float2 thisPos = this.Position;
 				float2 offset = GetChildOffset((Card)new_child);
 				float2 new_pos = this.Position + offset;
-				Console.WriteLine("thisPos: {0} 	|	new_pos: {1}	|	offset: {2}", thisPos, new_pos, offset);
 				new_child.MoveToWorld(new_pos);
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;

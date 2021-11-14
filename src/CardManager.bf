@@ -241,6 +241,12 @@ namespace BeefShenzenIOSolitaire
 			{
 				for(SpecialCard card in resolved)
 				{
+					card.column.Remove(card);
+					card.parent.RemoveChild();
+				}
+
+				for(SpecialCard card in resolved)
+				{
 					card.Resolve();
 					card.Drop(holder.column.Back);
 				}
@@ -299,15 +305,16 @@ namespace BeefShenzenIOSolitaire
 
 			if(target_list.Count == 4)
 			{
+				// first check and see if any of the special cards are already in a temp spot. If so use that as the resolved location
 				for(Card card in target_list)
 				{
 					if(IsTempHolder(card))
 					{
-						out_holder = card as CardHolder;
+						out_holder = card.parent as CardHolder;
 						return true;
 					}
 				}
-
+				// no temp holders found, so look for an empty one
 				for(int i = 8; i < 11; i++)
 				{
 					if(CardHolder column = columns[i][0] as CardHolder)
@@ -329,12 +336,9 @@ namespace BeefShenzenIOSolitaire
 			resolved_greens.Clear();
 			resolved_reds.Clear();
 			resolved_whites.Clear();
-			////let green_count = scope List<Card>();
-			//let red_count = scope List<Card>();
-			//let white_count = scope List<Card>();
 
 			bool check_again = false;
-			for(int i =0; i < 8; i++)
+			for(int i =0; i < 11; i++)
 			{
 				Card tip = columns[i].Back;
 				if(tip.IsNumbercard())
@@ -346,19 +350,53 @@ namespace BeefShenzenIOSolitaire
 						{
 							List<Card> column = columns[11];
 							num_card.Drop(column.Back);
+							check_again = true;
 						}
 
 						if(num_card.GetCardType() == .Char)
 						{
 							num_card.Drop(columns[12].Back);
+							check_again = true;
 						}
 
 						if(num_card.GetCardType() == .Coin)
 						{
 							num_card.Drop(columns[13].Back);
+							check_again = true;
+						}
+					}
+
+					if(num_card.card_num == 2)
+					{
+						if(num_card.GetCardType() == .Bamboo)
+						{
+							NumberCard tip_num = columns[11].Back as NumberCard;
+							if(tip_num != null && tip_num.card_num == 1)
+							{
+								num_card.Drop(columns[11].Back);
+								check_again = true;
+							}
 						}
 
-						check_again = true;
+						if(num_card.GetCardType() == .Char)
+						{
+							NumberCard tip_num = columns[12].Back as NumberCard;
+							if(tip_num != null && tip_num.card_num == 1)
+							{
+								num_card.Drop(columns[12].Back);
+								check_again = true;
+							}
+						}
+
+						if(num_card.GetCardType() == .Coin)
+						{
+							NumberCard tip_num = columns[13].Back as NumberCard;
+							if(tip_num != null && tip_num.card_num == 1)
+							{
+								num_card.Drop(columns[13].Back);
+								check_again = true;
+							}
+						}
 					}
 				}
 

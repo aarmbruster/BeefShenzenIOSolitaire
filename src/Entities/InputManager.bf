@@ -101,7 +101,6 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 					picked_card.Drop(picked_card.parent);
 					picked_card.MoveToWorld(picked_card.picked_up_pos);
-					//picked_card.OnDropped();
 					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
