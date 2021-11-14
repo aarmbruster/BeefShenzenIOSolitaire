@@ -8,7 +8,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			if(card_info.card_type == .Green)
 			{
-				card_front.Tint = Colors.Green;
+				card_indicator.Tint = Colors.Green;
 			}
 
 			top_indicator = Components.Add(GetCardIndicator(card_info.card_type));
@@ -48,8 +48,18 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 		}
 
-		public override void OnDropped()
+		public void Resolve()
 		{
+			SetState(.Resolved);
+			card_front.Visible = top_indicator.Visible = bottom_indicator.Visible = card_indicator.Visible = false;
+			card_back.Visible = true;
+		}
+
+		public override void UpdateState(bool atomic = false)
+		{
+			if(card_state == .Resolved && !atomic)
+				return;
+
 			if(IsParented)
 			{
 				if(parent.GetCardType() == .Holder)
@@ -62,22 +72,26 @@ namespace BeefShenzenIOSolitaire.Entities
 						else if(parent_holder.holder_type == .Temp)
 					{
 						SetState(.Temped);
-					} else if (parent_holder.holder_type == .Stack)
+					}
+						else if (parent_holder.holder_type == .Stack)
 					{
 						SetState(.Stacked);
 					}
-
 				}
 				else
 				{
 					SetState(.Stacked);
 				}
 			}
-			CardManager.check_ends();
 		}
 
 		public override bool CanBeDroppedOn(Card new_parent)
 		{
+			if(card_state == .Resolved)
+			{
+				return false;
+			}
+
 			if(new_parent.GetCardType() == .Holder)
 			{
 				let holder_parent = (CardHolder)new_parent;
@@ -100,6 +114,13 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 
 			return false;
+		}
+
+		public override float2 GetChildOffset(Card in_child)
+		{
+			if(card_state == .Resolved)
+				return float2.Zero;
+			return base.GetChildOffset(in_child);
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace BeefShenzenIOSolitaire.Entities
 	{
 		public SpecialButtonState button_state {get; private set;}
 
-		public CardType card_type {get; private set;}
+		public CardType card_association {get; private set;}
 
 		private Sprite down;
 		private Sprite up;
@@ -25,7 +25,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public this(String name, float2 pos, CardType card_type) : base ("Button")
 		{
-			this.card_type = card_type;
+			card_association = card_type;
 
 			up = Components.Add(new Sprite(Core.Atlas[scope $"main/button_{name}_up"]));
 			down = Components.Add(new Sprite(Core.Atlas[scope $"main/button_{name}_down"]));
@@ -68,12 +68,14 @@ namespace BeefShenzenIOSolitaire.Entities
 		public override void OnMouseUp()
 		{
 			base.OnMouseUp();
+
+			Console.WriteLine("Card Association: {0}", card_association);
 			CardHolder holder = null;
-			if(CardManager.CanResolveSpecials(card_type, ref holder))
+			if(CardManager.CanResolveSpecials(card_association, ref holder))
 			{
 				if(holder != null)
 				{
-					CardManager.ResolveSpecial(card_type);
+					CardManager.ResolveSpecial(card_association, holder);
 				}
 			}
 			up.Visible = true;

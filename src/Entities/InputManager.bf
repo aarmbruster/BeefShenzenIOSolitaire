@@ -1,3 +1,4 @@
+// Copyright Andrew Armbruster, All Rights Reserved
 using Atma;
 using System;
 using Atma.Entities.Components;
@@ -18,7 +19,7 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		private bool keyDown = false;
 
-		protected void Click(Atma.MouseButtons mouse_button)
+		protected void Pressed(Atma.MouseButtons mouse_button)
 		{
 			if(mouse_button == .Left || mouse_button == .Right)
 			{
@@ -34,12 +35,9 @@ namespace BeefShenzenIOSolitaire.Entities
 							return;
 						}
 
-						if(SpecialButton sp = col.Entity as SpecialButton)
+						if(SpecialButton sp = col.Entity as SpecialButton && sp.button_state == .solvable)
 						{
-							if(sp.button_state == .solvable)
-							{
-								picked_entity = sp;
-							}
+							picked_entity = sp;
 						}
 						
 						if(Card temp = col.Entity as Card)
@@ -79,7 +77,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					picked_card.SetParent(null);
 					picked_card.column.Remove(picked_card);
 					picked_card.column = null;
-					picked_card.OnDropped();
+					picked_card.UpdateState();
 					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
@@ -103,7 +101,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 					picked_card.Drop(picked_card.parent);
 					picked_card.MoveToWorld(picked_card.picked_up_pos);
-					picked_card.OnDropped();
+					//picked_card.OnDropped();
 					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
@@ -121,7 +119,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(Core.Input.MousePressed(.Left) && !mouse_down_l)
 			{
 				mouse_down_l = true;
-				Click(.Left);
+				Pressed(.Left);
 			}
 
 			if(Core.Input.MouseReleased(.Left) && mouse_down_l)
@@ -133,7 +131,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(Core.Input.MousePressed(.Right) && !mouse_down_r)
 			{
 				mouse_down_r = true;
-				Click(.Right);
+				Pressed(.Right);
 			}
 
 			if(Core.Input.MouseReleased(.Right) && mouse_down_r)
@@ -182,7 +180,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				BeefShenzenIOSolitaire scene = (BeefShenzenIOSolitaire)CardManager.game_scene;
 				CardManager.reset_cards();
 				scene.get_card_manager().shuffle_cards(0);
-				scene.get_card_manager().place_cards(scene);
+				scene.get_card_manager().deal_cards(scene);
 			}
 			else if(!Core.Input.KeyCheck(Atma.Keys.S) && keyDown)
 			{
@@ -192,6 +190,9 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(CardManager.focused_entity != null)
 				CardManager.focused_entity.OnCursorExit();
 			CardManager.focused_entity = null;
+
+
+			CardManager.check_ends();
 		}
 	}
 }

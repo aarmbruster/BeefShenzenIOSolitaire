@@ -9,9 +9,9 @@ namespace BeefShenzenIOSolitaire
 		public Player player;
 		public Background background;
 
-		public SpecialButton dragon_green;
-		public SpecialButton dragon_red;
-		public SpecialButton dragon_white;
+		public SpecialButton dragon_green {get; protected set;};
+		public SpecialButton dragon_red {get; protected set;};
+		public SpecialButton dragon_white {get; protected set;};
 
 		private CardManager card_manager = new CardManager()  ~ delete _;
 
@@ -26,6 +26,16 @@ namespace BeefShenzenIOSolitaire
 
 			player = AddEntity(new Player(this));
 			background = AddEntity(new Background());
+
+			dragon_green = AddEntity(	new SpecialButton("green", 	float2(533, 53), .Green));
+			RegisterCollision(dragon_green.collision);
+			dragon_red = AddEntity(		new SpecialButton("red", 	float2(533, 137), .Red));
+			RegisterCollision(dragon_red.collision);
+			dragon_white = AddEntity(	new SpecialButton("white", 	float2(533, 219), .White));
+			RegisterCollision(dragon_white.collision);
+			dragon_green.Depth = 1;
+			dragon_red.Depth = 1;
+			dragon_white.Depth = 1;
 			
 			card_manager.create_cards(this);
 
@@ -37,19 +47,10 @@ namespace BeefShenzenIOSolitaire
 			card_manager.shuffle_cards(rand.Next(0, 60000));
 			delete(rand);
 
-			card_manager.place_cards(this);
+			card_manager.deal_cards(this);
 
 			this.Camera.AddRenderer(new SceneRenderer(this));
 
-			dragon_green = AddEntity(	new SpecialButton("green", 	float2(533, 53), .Green));
-			this.RegisterCollision(dragon_green.collision);
-			dragon_red = AddEntity(		new SpecialButton("red", 	float2(533, 137), .Red));
-			this.RegisterCollision(dragon_red.collision);
-			dragon_white = AddEntity(	new SpecialButton("white", 	float2(533, 219), .White));
-			this.RegisterCollision(dragon_white.collision);
-			dragon_green.Depth = 1;
-			dragon_red.Depth = 1;
-			dragon_white.Depth = 1;
 		}
 
 		public CardManager get_card_manager()

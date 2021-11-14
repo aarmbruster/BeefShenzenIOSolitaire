@@ -186,9 +186,9 @@ namespace BeefShenzenIOSolitaire
 			}
 		}
 
-		public void place_cards(Scene scene)
+		public void deal_cards(Scene scene)
 		{
-			// place the cards
+			// deal the cards
 			for(int i = cards.Count - 1; i >= 0; i--)
 			{
 				int col_index = i%8;
@@ -231,31 +231,45 @@ namespace BeefShenzenIOSolitaire
 			}
 		}
 
-		private static List<Card> resolved_greens = new  List<Card>() ~delete _;
-		private static List<Card> resolved_reds = new  List<Card>() ~delete _;
-		private static List<Card> resolved_whites= new  List<Card>() ~delete _;
+		private static List<SpecialCard> resolved_greens = new  List<SpecialCard>() ~delete _;
+		private static List<SpecialCard> resolved_reds = new  List<SpecialCard>() ~delete _;
+		private static List<SpecialCard> resolved_whites= new  List<SpecialCard>() ~delete _;
 
-		public static void ResolveSpecial(CardType card_type)
+		public static void ResolveSpecial(CardType card_type, CardHolder holder)
 		{
+			void ResolveGroup(ref List<SpecialCard> resolved)
+			{
+				for(SpecialCard card in resolved)
+				{
+					card.Resolve();
+					card.Drop(holder.column.Back);
+				}
+				resolved.Clear();
+			}
+
 			if(card_type == .Green && resolved_greens.Count == 4)
 			{
+
+				ResolveGroup(ref resolved_greens);
 				Console.WriteLine("resolve the greens!");
 			}
 
 			if(card_type == .Red && resolved_reds.Count == 4)
 			{
+				ResolveGroup(ref resolved_reds);
 				Console.WriteLine("resolve the reds!");
 			}
 
 			if(card_type == .White && resolved_whites.Count == 4)
 			{
+				ResolveGroup(ref resolved_whites);
 				Console.WriteLine("resolve the whites!");
 			}
 		}
 
 		public static bool CanResolveSpecials(CardType card_type, ref CardHolder out_holder)
 		{
-			List<Card> target_list = scope List<Card>();
+			List<SpecialCard> target_list = scope List<SpecialCard>();
 			do
 			{
 				if(card_type == .Green)
@@ -356,17 +370,17 @@ namespace BeefShenzenIOSolitaire
 
 				if(tip.card_type == .Green)
 				{
-					resolved_greens.Add(tip);
+					resolved_greens.Add(tip as SpecialCard);
 				}
 
 				if(tip.card_type == .Red)
 				{
-					resolved_reds.Add(tip);
+					resolved_reds.Add(tip as SpecialCard);
 				}
 
 				if(tip.card_type == .White)
 				{
-					resolved_whites.Add(tip);
+					resolved_whites.Add(tip as SpecialCard);
 				}
 			}
 

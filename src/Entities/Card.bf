@@ -59,8 +59,9 @@ namespace BeefShenzenIOSolitaire.Entities
 		protected CardState card_state = .None;
 		public List<Card> column;
 
-		protected Sprite card_back;
 		protected Sprite card_front;
+		protected Sprite card_back;
+		protected Sprite card_indicator;
 
 		protected Sprite top_indicator;
 		protected Sprite bottom_indicator;
@@ -84,19 +85,21 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			this.card_type = card_info.card_type;
 			this.card_name = card_info.card_name;
-			
-			card_back = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
-			card_front = Components.Add(new Sprite(Core.Atlas[card_name]));
-			card_front.SetDepth(0.1f);
+
+			card_back = Components.Add(new Sprite(Core.Atlas["main/card_back"]));
+			card_back.Visible = false;
+			card_front = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
+			card_indicator = Components.Add(new Sprite(Core.Atlas[card_name]));
+			card_indicator.SetDepth(0.1f);
 
 			collision = Components.Add(new CollisionComponent(true));
-			collision.LocalBounds = card_back.LocalBounds;
+			collision.LocalBounds = card_front.LocalBounds;
 		}
 
-		public virtual float GetChildOffset()
+		/*public virtual float GetChildOffset()
 		{
 			return CardManager.card_offset;
-		}
+		}*/
 
 		public void SetColumn(List<Card> in_column)
 		{
@@ -138,14 +141,17 @@ namespace BeefShenzenIOSolitaire.Entities
 			this.SetParent(new_parent);
 			this.SetColumn(column);
 			new_parent.SetChild(this);
-			this.OnDropped();
+			this.UpdateState();
 			this.SetDepth(new_parent.Depth + 1);
 			if(child != null)
 				child.Drop(this);
 		}
 
-		public virtual void OnDropped()
+		public virtual void UpdateState(bool atomic = false)
 		{
+			if(card_state == .Resolved && !atomic)
+				return;
+
 			SetState(.Stacked);
 			if(HasParent)
 			{
@@ -164,10 +170,10 @@ namespace BeefShenzenIOSolitaire.Entities
 				}
 			}
 			
-			if(child!=null)
-				((Card)child).OnDropped();
+			/*if(child!=null)
+				((Card)child).OnDropped();*/
 
-			CardManager.check_ends();
+			
 		}
 
 		protected override void OnUpdate()
@@ -179,29 +185,12 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			base.OnCursorEnter();
 			this.isMousedOver = true;
-			//Console.WriteLine("Cursor enter: {}", this.card_name);
 		}
 
 		public override void OnCursorExit()
 		{
 			base.OnCursorExit();
 			isMousedOver = false;
-			//Console.WriteLine("Cursor exit: {}", this.card_name);
-		}
-
-		protected override void OnFixedUpdate()
-		{
-			base.OnFixedUpdate();
-		}
-
-		public override void OnMouseDown()
-		{
-			base.OnMouseDown();
-		}
-
-		public override void OnMouseUp()
-		{
-			base.OnMouseUp();
 		}
 
 		public bool IsChildNumberOneLess()
@@ -253,14 +242,12 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public override bool CanPickUp()
 		{
-			bool isChildValidPickup = IsChildPickupValid();
-
 			switch(GetState())
 			{
 			case .None:
 				return true;
 			case .Stacked:
-				return isChildValidPickup;
+				return IsChildPickupValid();
 			case .Resolved:
 				return false;
 			case .Temped:

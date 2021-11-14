@@ -54,7 +54,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(card_info.card_type == .Bamboo)
 			{
 				card_top_num.Tint = card_bottom_num.Tint = Colors.Green;
-				card_front.Tint = Colors.Green;
+				card_indicator.Tint = Colors.Green;
 				bottom_indicator.Tint = Colors.Green;
 				top_indicator.Tint = Colors.Green;
 			}
@@ -93,8 +93,12 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 
 			// is parent a holder card
-			if(IsParentHolder(new_parent) && !this.HasChild())
+			if(IsParentHolder(new_parent))
 			{
+				CardHolder holder = new_parent as CardHolder;
+				if(holder.holder_type == .Temp && this.HasChild())
+					return false;
+
 				if(new_parent.IsHolderResolvedStack(new_parent))
 				{
 					return false;
@@ -120,12 +124,14 @@ namespace BeefShenzenIOSolitaire.Entities
 			return false;
 		}
 
-		public override void OnDropped()
+		public override void UpdateState(bool atomic = false)
 		{
+			if(card_state == .Resolved && !atomic)
+				return;
+
 			SetState(.Stacked);
 			if(IsParented)
 			{
-				//SetDepth(this.parent.Depth + 1);
 				if(parent.GetCardType() == .Holder)
 				{
 					if(((CardHolder)parent).holder_type == .Temp)
@@ -148,19 +154,6 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 				}
 			}
-
-			if(child!=null)
-				((Card)child).OnDropped();
-
-			CardManager.check_ends();
-		}
-
-		public override float GetChildOffset()
-		{
-			if(this.card_state == .Resolved)
-				return 0.0f;
-			else
-				return base.GetChildOffset();
 		}
 
 		public override float2 GetChildOffset(Card in_child)

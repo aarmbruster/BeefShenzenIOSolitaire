@@ -1,3 +1,4 @@
+// Copyright Andrew Armbruster, All Rights Reserved
 using System;
 
 namespace Atma
