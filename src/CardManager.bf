@@ -7,7 +7,7 @@ namespace BeefShenzenIOSolitaire
 {
 	public class CardManager
 	{
-		public static Scene game_scene {get; protected set;}
+		public static BeefShenzenIOSolitaire game_scene {get; protected set;}
 
 		public static Entity focused_entity;
 
@@ -137,7 +137,7 @@ namespace BeefShenzenIOSolitaire
 
 		public void setup_holders(Scene scene)
 		{
-			game_scene = scene;
+			game_scene = (BeefShenzenIOSolitaire)scene;
 			// place the stacked card holders
 			for(int i = 0; i < 8; i++)
 			{
@@ -233,6 +233,11 @@ namespace BeefShenzenIOSolitaire
 
 		public static void check_ends()
 		{
+
+			let green_count = scope List<Card>();
+			let red_count = scope List<Card>();
+			let white_count = scope List<Card>();
+
 			bool check_again = false;
 			for(int i =0; i < 8; i++)
 			{
@@ -267,6 +272,36 @@ namespace BeefShenzenIOSolitaire
 					tip.Drop(columns[14].Back);
 					check_again = true;
 				}
+
+				if(tip.card_type == .Green)
+				{
+					green_count.Add(tip);
+				}
+
+				if(tip.card_type == .Red)
+				{
+					red_count.Add(tip);
+				}
+
+				if(tip.card_type == .White)
+				{
+					white_count.Add(tip);
+				}
+			}
+
+			if(green_count.Count == 4)
+			{
+				game_scene.dragon_green.SetMode(true);
+			}
+
+			if(red_count.Count == 4)
+			{
+				game_scene.dragon_red.SetMode(true);
+			}
+
+			if(white_count.Count == 4)
+			{
+				game_scene.dragon_white.SetMode(true);
 			}
 
 			if(check_again)

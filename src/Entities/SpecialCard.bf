@@ -62,7 +62,11 @@ namespace BeefShenzenIOSolitaire.Entities
 						else if(parent_holder.holder_type == .Temp)
 					{
 						SetState(.Temped);
+					} else if (parent_holder.holder_type == .Stack)
+					{
+						SetState(.Stacked);
 					}
+
 				}
 				else
 				{

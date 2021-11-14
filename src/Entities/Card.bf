@@ -65,7 +65,8 @@ namespace BeefShenzenIOSolitaire.Entities
 		protected Sprite top_indicator;
 		protected Sprite bottom_indicator;
 		
-		private CardType card_type;
+		public CardType card_type {get; protected set;}
+
 		private String card_name;
 		private bool isMousedOver = false;
 		private bool isMovable = false;
@@ -139,6 +140,8 @@ namespace BeefShenzenIOSolitaire.Entities
 			new_parent.SetChild(this);
 			this.OnDropped();
 			this.SetDepth(new_parent.Depth + 1);
+			if(child != null)
+				child.Drop(this);
 		}
 
 		public virtual void OnDropped()
