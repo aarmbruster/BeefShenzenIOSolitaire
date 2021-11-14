@@ -20,13 +20,13 @@ namespace BeefShenzenIOSolitaire.Entities
 		private Sprite down;
 		private Sprite up;
 		private Sprite active;
-		
-		private bool _is_solvable;
 
 		public CollisionComponent collision {get; protected set;}
 
-		public this(String name, float2 pos) : base ("Button")
+		public this(String name, float2 pos, CardType card_type) : base ("Button")
 		{
+			this.card_type = card_type;
+
 			up = Components.Add(new Sprite(Core.Atlas[scope $"main/button_{name}_up"]));
 			down = Components.Add(new Sprite(Core.Atlas[scope $"main/button_{name}_down"]));
 			active = Components.Add(new Sprite(Core.Atlas[scope $"main/button_{name}_active"]));
@@ -68,6 +68,14 @@ namespace BeefShenzenIOSolitaire.Entities
 		public override void OnMouseUp()
 		{
 			base.OnMouseUp();
+			CardHolder holder = null;
+			if(CardManager.CanResolveSpecials(card_type, ref holder))
+			{
+				if(holder != null)
+				{
+					CardManager.ResolveSpecial(card_type);
+				}
+			}
 			up.Visible = true;
 			active.Visible = down.Visible = false;
 		}

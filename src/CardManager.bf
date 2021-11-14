@@ -231,12 +231,93 @@ namespace BeefShenzenIOSolitaire
 			}
 		}
 
+		private static List<Card> resolved_greens = new  List<Card>() ~delete _;
+		private static List<Card> resolved_reds = new  List<Card>() ~delete _;
+		private static List<Card> resolved_whites= new  List<Card>() ~delete _;
+
+		public static void ResolveSpecial(CardType card_type)
+		{
+			if(card_type == .Green && resolved_greens.Count == 4)
+			{
+				Console.WriteLine("resolve the greens!");
+			}
+
+			if(card_type == .Red && resolved_reds.Count == 4)
+			{
+				Console.WriteLine("resolve the reds!");
+			}
+
+			if(card_type == .White && resolved_whites.Count == 4)
+			{
+				Console.WriteLine("resolve the whites!");
+			}
+		}
+
+		public static bool CanResolveSpecials(CardType card_type, ref CardHolder out_holder)
+		{
+			List<Card> target_list = scope List<Card>();
+			do
+			{
+				if(card_type == .Green)
+				{
+					target_list = resolved_greens;
+					break;
+				}
+				if(card_type == .Red)
+				{
+					target_list = resolved_reds;
+					break;
+				}
+				if(card_type == .White)
+				{
+					target_list = resolved_whites;
+					break;
+				}
+			}
+
+
+			bool IsTempHolder(Card card)
+			{
+				if(CardHolder holder = card.parent as CardHolder)
+					return holder.holder_type == .Temp;
+				return false;
+			}
+
+			if(target_list.Count == 4)
+			{
+				for(Card card in target_list)
+				{
+					if(IsTempHolder(card))
+					{
+						out_holder = card as CardHolder;
+						return true;
+					}
+				}
+
+				for(int i = 8; i < 11; i++)
+				{
+					if(CardHolder column = columns[i][0] as CardHolder)
+					{
+						if(column.child == null)
+						{
+							out_holder = columns[i][0] as CardHolder;
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
 		public static void check_ends()
 		{
-
-			let green_count = scope List<Card>();
-			let red_count = scope List<Card>();
-			let white_count = scope List<Card>();
+			resolved_greens.Clear();
+			resolved_reds.Clear();
+			resolved_whites.Clear();
+			////let green_count = scope List<Card>();
+			//let red_count = scope List<Card>();
+			//let white_count = scope List<Card>();
 
 			bool check_again = false;
 			for(int i =0; i < 8; i++)
@@ -275,31 +356,31 @@ namespace BeefShenzenIOSolitaire
 
 				if(tip.card_type == .Green)
 				{
-					green_count.Add(tip);
+					resolved_greens.Add(tip);
 				}
 
 				if(tip.card_type == .Red)
 				{
-					red_count.Add(tip);
+					resolved_reds.Add(tip);
 				}
 
 				if(tip.card_type == .White)
 				{
-					white_count.Add(tip);
+					resolved_whites.Add(tip);
 				}
 			}
 
-			if(green_count.Count == 4)
+			if(resolved_greens.Count == 4)
 			{
 				game_scene.dragon_green.SetMode(true);
 			}
 
-			if(red_count.Count == 4)
+			if(resolved_reds.Count == 4)
 			{
 				game_scene.dragon_red.SetMode(true);
 			}
 
-			if(white_count.Count == 4)
+			if(resolved_whites.Count == 4)
 			{
 				game_scene.dragon_white.SetMode(true);
 			}

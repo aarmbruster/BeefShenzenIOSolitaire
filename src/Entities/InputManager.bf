@@ -36,10 +36,9 @@ namespace BeefShenzenIOSolitaire.Entities
 
 						if(SpecialButton sp = col.Entity as SpecialButton)
 						{
-							Console.WriteLine("it's a special button");
 							if(sp.button_state == .solvable)
 							{
-								
+								picked_entity = sp;
 							}
 						}
 						
@@ -65,6 +64,8 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		protected void Release(Atma.MouseButtons mouse_button)
 		{
+			if(picked_entity == null)
+				return;
 			if(Card picked_card = picked_entity as Card)
 			{
 				if(mouse_button == .Right && picked_entity != null)
@@ -79,6 +80,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					picked_card.column.Remove(picked_card);
 					picked_card.column = null;
 					picked_card.OnDropped();
+					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
 	
@@ -102,9 +104,14 @@ namespace BeefShenzenIOSolitaire.Entities
 					picked_card.Drop(picked_card.parent);
 					picked_card.MoveToWorld(picked_card.picked_up_pos);
 					picked_card.OnDropped();
+					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
+				
 			}
+
+			if(picked_entity != null)
+				picked_entity.OnMouseUp();
 		}
 
 		protected override void OnUpdate()

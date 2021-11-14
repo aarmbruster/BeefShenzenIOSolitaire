@@ -158,7 +158,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		public override float GetChildOffset()
 		{
 			if(this.card_state == .Resolved)
-				return float(0.f);
+				return 0.0f;
 			else
 				return base.GetChildOffset();
 		}

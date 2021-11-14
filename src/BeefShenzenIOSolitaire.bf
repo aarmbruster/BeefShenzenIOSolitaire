@@ -41,11 +41,11 @@ namespace BeefShenzenIOSolitaire
 
 			this.Camera.AddRenderer(new SceneRenderer(this));
 
-			dragon_green = AddEntity(	new SpecialButton("green", 	float2(533, 53)));
+			dragon_green = AddEntity(	new SpecialButton("green", 	float2(533, 53), .Green));
 			this.RegisterCollision(dragon_green.collision);
-			dragon_red = AddEntity(		new SpecialButton("red", 	float2(533, 137)));
+			dragon_red = AddEntity(		new SpecialButton("red", 	float2(533, 137), .Red));
 			this.RegisterCollision(dragon_red.collision);
-			dragon_white = AddEntity(	new SpecialButton("white", 	float2(533, 219)));
+			dragon_white = AddEntity(	new SpecialButton("white", 	float2(533, 219), .White));
 			this.RegisterCollision(dragon_white.collision);
 			dragon_green.Depth = 1;
 			dragon_red.Depth = 1;
