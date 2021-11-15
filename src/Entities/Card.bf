@@ -68,6 +68,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		
 		public CardType card_type {get; protected set;}
 
+		private SoundEffect card_swipe;
 		private String card_name;
 		private bool isMousedOver = false;
 		private bool isMovable = false;
@@ -94,6 +95,8 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			collision = Components.Add(new CollisionComponent(true));
 			collision.LocalBounds = card_front.LocalBounds;
+
+			card_swipe = Core.Assets.LoadSoundEffect(scope $"sounds/card_sweep.wav");
 		}
 
 		public void SetColumn(List<Card> in_column)
@@ -130,6 +133,8 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public void Drop(Card new_parent)
 		{
+			card_swipe.Play(0, 0, 0);
+
 			if(this.column!=null)
 				this.column.Remove(this);
 			if(this.parent!=null)

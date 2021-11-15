@@ -6,6 +6,7 @@ namespace BeefShenzenIOSolitaire
 {
 	public class BeefShenzenIOSolitaire : Scene
 	{
+		public Music music;
 		public Player player;
 		public Background background;
 
@@ -51,6 +52,8 @@ namespace BeefShenzenIOSolitaire
 
 			this.Camera.AddRenderer(new SceneRenderer(this));
 
+			music = Core.Assets.LoadMusic("music/Solitaire.mp3");
+			//music.Play(); // adding back in after audio adjustment is completed
 		}
 
 		public CardManager get_card_manager()
