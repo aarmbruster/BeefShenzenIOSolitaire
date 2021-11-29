@@ -96,7 +96,7 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(IsParentHolder(new_parent))
 			{
 				CardHolder holder = new_parent as CardHolder;
-				if(holder.holder_type == .Temp && this.HasChild())
+				if(holder.holder_type == .Temp && HasChild())
 					return false;
 
 				if(new_parent.IsHolderResolvedStack(new_parent))
@@ -106,7 +106,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				return true;
 			}
 
-			if(new_parent.IsNumbercard())
+			if(new_parent.IsNumberCard())
 			{
 				NumberCard parent_num = (NumberCard)new_parent;
 
@@ -145,7 +145,7 @@ namespace BeefShenzenIOSolitaire.Entities
 					}
 				}
 
-				if(parent.IsNumbercard())
+				if(parent.IsNumberCard())
 				{
 					NumberCard num_parent = (NumberCard)parent;
 					if(this.card_num - num_parent.card_num == 1)

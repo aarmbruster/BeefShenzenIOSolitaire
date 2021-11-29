@@ -21,12 +21,10 @@ namespace BeefShenzenIOSolitaire.Entities
 				_aimX.AddAxis(0, .RightX, DeadZone);
 				_aimY.AddAxis(0, .LeftX, DeadZone);
 				mouseDown.AddMouseButton(.Left);
-				//mouseDown.Repeat(0, 1);
 			}
 
 			public void Update(float2 worldPosition)
 			{
-				//Aim = float2(Screen.Mouse - worldPosition).NormalizedSafe;
 				Aim = float2(Screen.Mouse - worldPosition);
 			}
 

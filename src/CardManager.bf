@@ -11,18 +11,8 @@ namespace BeefShenzenIOSolitaire
 
 		public static Entity focused_entity;
 
-		private static uint8 start_card_depth = 64;
-		private static uint8 picked_card_depth = 128;
-		
-		public static uint8 scd()
-		{
-			return start_card_depth;
-		}
-
-		public static uint8 pcd()
-		{
-			return picked_card_depth;
-		}
+		public const uint8 start_card_depth = 64;
+		public const uint8 picked_card_depth = 128;
 
 		public readonly static float column_y = 284;
 		public readonly static float single_y = 19;
@@ -83,6 +73,12 @@ namespace BeefShenzenIOSolitaire
 
 		public static CardHolder[15] card_holders = .();
 
+		private static List<SpecialCard> resolved_greens = new  List<SpecialCard>() ~delete _;
+		private static List<SpecialCard> resolved_reds = new  List<SpecialCard>() ~delete _;
+		private static List<SpecialCard> resolved_whites= new  List<SpecialCard>() ~delete _;
+
+		private static Card current_card = null ~delete _;
+
 		public static List<Card> Cards()
 		{
 			return cards;
@@ -100,6 +96,18 @@ namespace BeefShenzenIOSolitaire
 				delete(l);
 			}
 			columns.Clear();
+		}
+
+		private void Update()
+		{
+			if(current_card != null)
+			{
+				if(!current_card.is_lerping)
+				{
+					current_card = null;
+					check_ends();
+				}
+			}
 		}
 
 		private List<Card> get_column(int i)
@@ -203,7 +211,7 @@ namespace BeefShenzenIOSolitaire
 				card.SetDepth((uint8)col.Count + 1);
 				col.Add(card);
 
-				parent.SetChild(card);
+				parent.SetChild(card, false);
 				card.SetParent(parent);
 				
 				card.collision.Added(card);
@@ -230,10 +238,6 @@ namespace BeefShenzenIOSolitaire
 				card.reset();
 			}
 		}
-
-		private static List<SpecialCard> resolved_greens = new  List<SpecialCard>() ~delete _;
-		private static List<SpecialCard> resolved_reds = new  List<SpecialCard>() ~delete _;
-		private static List<SpecialCard> resolved_whites= new  List<SpecialCard>() ~delete _;
 
 		public static void ResolveSpecial(CardType card_type, CardHolder holder)
 		{
@@ -317,9 +321,9 @@ namespace BeefShenzenIOSolitaire
 				// no temp holders found, so look for an empty one
 				for(int i = 8; i < 11; i++)
 				{
-					if(CardHolder column = columns[i][0] as CardHolder)
+					if(CardHolder holder = columns[i][0] as CardHolder)
 					{
-						if(column.child == null)
+						if(holder.HasChild())
 						{
 							out_holder = columns[i][0] as CardHolder;
 							return true;
@@ -337,32 +341,43 @@ namespace BeefShenzenIOSolitaire
 			resolved_reds.Clear();
 			resolved_whites.Clear();
 
-			bool check_again = false;
+			void drop_card(Card target, Card parent)
+			{
+				target.Drop(parent);
+				current_card = target;
+			}
+
 			for(int i =0; i < 11; i++)
 			{
 				Card tip = columns[i].Back;
-				if(tip.IsNumbercard())
+				if(tip.IsNumberCard())
 				{
 					NumberCard num_card = (NumberCard)tip;
 					if(num_card.card_num == 1)
 					{
 						if(num_card.GetCardType() == .Bamboo)
 						{
-							List<Card> column = columns[11];
-							num_card.Drop(column.Back);
-							check_again = true;
+							drop_card(num_card, columns[11].Back);
+							return;
+							//List<Card> column = columns[11];
+							//num_card.Drop(column.Back);
+							////check_again = true;
 						}
 
 						if(num_card.GetCardType() == .Char)
 						{
-							num_card.Drop(columns[12].Back);
-							check_again = true;
+							drop_card(num_card, columns[12].Back);
+							return;
+							//num_card.Drop(columns[12].Back);
+							//check_again = true;
 						}
 
 						if(num_card.GetCardType() == .Coin)
 						{
-							num_card.Drop(columns[13].Back);
-							check_again = true;
+							drop_card(num_card, columns[13].Back);
+							return;
+							//num_card.Drop(columns[13].Back);
+							//check_again = true;
 						}
 					}
 
@@ -373,8 +388,10 @@ namespace BeefShenzenIOSolitaire
 							NumberCard tip_num = columns[11].Back as NumberCard;
 							if(tip_num != null && tip_num.card_num == 1)
 							{
-								num_card.Drop(columns[11].Back);
-								check_again = true;
+								drop_card(num_card, columns[11].Back);
+								return;
+								//num_card.Drop(columns[11].Back);
+								//check_again = true;
 							}
 						}
 
@@ -383,8 +400,10 @@ namespace BeefShenzenIOSolitaire
 							NumberCard tip_num = columns[12].Back as NumberCard;
 							if(tip_num != null && tip_num.card_num == 1)
 							{
-								num_card.Drop(columns[12].Back);
-								check_again = true;
+								drop_card(num_card, columns[12].Back);
+								return;
+								//num_card.Drop(columns[12].Back);
+								//check_again = true;
 							}
 						}
 
@@ -393,8 +412,10 @@ namespace BeefShenzenIOSolitaire
 							NumberCard tip_num = columns[13].Back as NumberCard;
 							if(tip_num != null && tip_num.card_num == 1)
 							{
-								num_card.Drop(columns[13].Back);
-								check_again = true;
+								drop_card(num_card, columns[13].Back);
+								return;
+								//num_card.Drop(columns[13].Back);
+								//check_again = true;
 							}
 						}
 					}
@@ -402,8 +423,10 @@ namespace BeefShenzenIOSolitaire
 
 				if(tip.GetCardType() == .Flower)
 				{
-					tip.Drop(columns[14].Back);
-					check_again = true;
+					drop_card(tip, columns[14].Back);
+					return;
+					//tip.Drop(columns[14].Back);
+					//check_again = true;
 				}
 
 				if(tip.card_type == .Green)
@@ -437,10 +460,10 @@ namespace BeefShenzenIOSolitaire
 				game_scene.dragon_white.SetMode(true);
 			}
 
-			if(check_again)
+			/*if(check_again)
 			{
 				check_ends();
-			}
+			}*/
 		}
 	}
 }

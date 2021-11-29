@@ -9,6 +9,7 @@ namespace BeefShenzenIOSolitaire.Entities
 {
 	public class InputManager : Entity
 	{
+		public bool enabled = true;
 		public float2 input_axis;
 		private bool mouse_down_l = false;
 		private bool mouse_down_r = false;
@@ -55,7 +56,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				if(card != null)
 				{
 					picked_entity = card;
-					card.OnPickedUp(CardManager.pcd(), input_axis - card.WorldPosition);
+					card.OnPickedUp(CardManager.picked_card_depth, input_axis - card.WorldPosition);
 				}
 			}
 		}
@@ -94,13 +95,14 @@ namespace BeefShenzenIOSolitaire.Entities
 							{
 								picked_card.Drop(column.Back);
 								picked_entity = null;
+								CardManager.check_ends();
 								return;
 							}
 							
 						}
 					}
 					picked_card.Drop(picked_card.parent);
-					picked_card.MoveToWorld(picked_card.picked_up_pos);
+					picked_card.LerpToWorld(picked_card.picked_up_pos);
 					picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
@@ -109,10 +111,15 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			if(picked_entity != null)
 				picked_entity.OnMouseUp();
+
+			CardManager.check_ends();
 		}
 
 		protected override void OnUpdate()
 		{
+			if(!enabled)
+				return;
+
 			base.OnUpdate();
 
 			if(Core.Input.MousePressed(.Left) && !mouse_down_l)
@@ -158,6 +165,9 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		protected override new void OnFixedUpdate()
 		{
+			if(!enabled)
+				return;
+
 			base.OnFixedUpdate();
 			for(var col in Scene.CollisionComponents)
 			{
@@ -174,7 +184,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			}
 			if(Core.Input.KeyCheck(Atma.Keys.S) && !keyDown)
 			{
-				Console.WriteLine("hello");
 				keyDown = true;
 				BeefShenzenIOSolitaire scene = (BeefShenzenIOSolitaire)CardManager.game_scene;
 				CardManager.reset_cards();
@@ -189,9 +198,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			if(CardManager.focused_entity != null)
 				CardManager.focused_entity.OnCursorExit();
 			CardManager.focused_entity = null;
-
-
-			CardManager.check_ends();
 		}
 	}
 }

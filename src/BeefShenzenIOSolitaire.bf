@@ -60,5 +60,14 @@ namespace BeefShenzenIOSolitaire
 		{
 			return card_manager;
 		}
+
+		public override void Update()
+		{
+			base.Update();
+			if(card_manager != null)
+			{
+				card_manager.[Friend]Update();
+			}
+		}
 	}
 }

@@ -49,10 +49,20 @@ namespace BeefShenzenIOSolitaire.Entities
 
 	public abstract class Card : Entity
 	{
+		private float2 _start_position;
+		private float2 _desired_position;
+		public bool is_lerping {get; private set;};
+		private float _lerp_progress = 0;
+		private float _lerp_amount = 0.1f;
+
 		public Card child {get; protected set;}
 		public Card parent{get; protected set;}
 
 		public bool IsParented => parent != null;
+		public bool HasChild()
+		{
+			return child != null;
+		} 
 
 		public CollisionComponent collision;
 
@@ -86,7 +96,7 @@ namespace BeefShenzenIOSolitaire.Entities
 		{
 			this.card_type = card_info.card_type;
 			this.card_name = card_info.card_name;
-
+			
 			card_back = Components.Add(new Sprite(Core.Atlas["main/card_back"]));
 			card_back.Visible = false;
 			card_front = Components.Add(new Sprite(Core.Atlas["main/card_front"]));
@@ -155,7 +165,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				return;
 
 			SetState(.Stacked);
-			if(HasParent)
+			if(IsParented)
 			{
 				SetDepth(this.parent.Depth + 1);
 				if(parent.GetCardType() == .Holder)
@@ -176,6 +186,20 @@ namespace BeefShenzenIOSolitaire.Entities
 		protected override void OnUpdate()
 		{
 			base.OnUpdate();
+
+			if(is_lerping)
+			{
+				MoveToWorld(Math.Lerp<float2>(_start_position, _desired_position, _lerp_progress));
+				Console.WriteLine("Lerp Progress: {0}", _lerp_progress);
+				if(_lerp_progress >= 1)
+				{
+					MoveToWorld(_desired_position);
+					is_lerping = false;
+					_lerp_progress = 0;
+					return;
+				}
+				_lerp_progress += _lerp_amount;
+			}
 		}
 
 		public override void OnCursorEnter()
@@ -232,11 +256,6 @@ namespace BeefShenzenIOSolitaire.Entities
 			return false;
 		}
 
-		public bool HasChild()
-		{
-			return child != null;
-		}
-
 		public override bool CanPickUp()
 		{
 			switch(GetState())
@@ -273,15 +292,18 @@ namespace BeefShenzenIOSolitaire.Entities
 			return false;
 		}
 
-		public virtual bool SetChild(Card new_child)
+		public virtual bool SetChild(Card new_child, bool use_lerping = true)
 		{
 			bool child_was_set = false;
-			if(child == null)
+			if(!HasChild())
 			{
 				child = new_child;
 				float2 offset = GetChildOffset((Card)new_child);
 				float2 new_pos = this.Position + offset;
-				new_child.MoveToWorld(new_pos);
+				if(use_lerping)
+					new_child.LerpToWorld(new_pos);
+				else
+					new_child.MoveToWorld(new_pos);
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;
 			}
@@ -309,9 +331,9 @@ namespace BeefShenzenIOSolitaire.Entities
 			child = null;
 		}
 
-		public bool IsNumbercard()
+		public bool IsNumberCard()
 		{
-			return GetCardType() == .Bamboo || GetCardType() == .Char || GetCardType() == .Coin;
+			return (int)GetCardType() < 3;
 		}
 
 		public virtual void SetParent(Card new_parent)
@@ -324,11 +346,39 @@ namespace BeefShenzenIOSolitaire.Entities
 			this.Depth = in_depth;
 		}
 
+		public void LerpToWorld(float2 new_world_pos)
+		{
+			is_lerping = true;
+			_start_position = Position;
+			_desired_position = new_world_pos;
+		}
+
 		public void MoveToWorld(float2 new_world_pos)
 		{
+			if(IsParented)
+			{
+				if(parent.IsNumberCard() && this.IsNumberCard() && IsDifferentSuite(parent))
+				{
+					var p = parent as NumberCard;
+					var t = this as NumberCard;
+
+					if(p.card_num - t.card_num == 1)
+					{
+						float len = Math.Abs((new_world_pos - Position).Length);
+						if(len > 20)
+						{
+							Console.WriteLine("Len Greater Than: {0}", len);
+							Console.WriteLine("Card: {0}  | Position: {1}  |  NewWorldPos: {2}  |  IsLerping: {3}", card_name, Position, new_world_pos, is_lerping);
+						}
+					}
+				}
+			}
+
 			Position = new_world_pos;
 			if(child != null)
+			{
 				child.MoveToWorld(new_world_pos + float2(0.0f, 36.0f));
+			}
 		}
 
 		public virtual Atma.Sprite GetCardIndicator(CardType in_card_type)
