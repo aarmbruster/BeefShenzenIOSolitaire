@@ -62,9 +62,9 @@ namespace BeefShenzenIOSolitaire.Entities
 
 			if(IsParented)
 			{
-				if(parent.GetCardType() == .Holder)
+				if(CardParent.GetCardType() == .Holder)
 				{
-					CardHolder parent_holder = (CardHolder)parent;
+					CardHolder parent_holder = CardParent as CardHolder;
 					if(parent_holder.holder_type == .Rose)
 					{
 						SetState(.Resolved);

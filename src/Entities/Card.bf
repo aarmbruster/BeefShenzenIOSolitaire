@@ -55,14 +55,11 @@ namespace BeefShenzenIOSolitaire.Entities
 		private float _lerp_progress = 0;
 		private float _lerp_amount = 0.1f;
 
-		public Card child {get; protected set;}
-		public Card parent{get; protected set;}
+		public bool IsParented => CardParent != null;
+		public Card CardParent {get; private set;};
+		public Card CardChild {get; private set;};
 
-		public bool IsParented => parent != null;
-		public bool HasChild()
-		{
-			return child != null;
-		} 
+		public bool HasChild => CardChild != null;
 
 		public CollisionComponent collision;
 
@@ -119,18 +116,15 @@ namespace BeefShenzenIOSolitaire.Entities
 			float depth = column.Count;
 			this.SetDepth(depth);
 
-			if(child != null)
-				((Card)child).SetColumn(in_column);
+			if(HasChild)
+				CardChild.SetColumn(in_column);
 		}
 
 		public virtual void OnPickedUp(uint8 in_depth, float2 input_offset)
 		{
 			SetDepth(in_depth);
 			this.input_offset = input_offset;
-			if(child != null)
-			{
-				child.OnPickedUp(in_depth + 1, input_offset);
-			}
+			if(HasChild) CardChild.OnPickedUp(in_depth + 1, input_offset);
 
 			card_state = .PickedUp;
 			picked_up_pos = this.Position;
@@ -141,22 +135,26 @@ namespace BeefShenzenIOSolitaire.Entities
 			return true;
 		}
 
-		public void Drop(Card new_parent)
+		public void RemoveCardChild(Card in_child)
+		{
+			CardChild = null;
+		}
+
+		public void Drop(Card new_parent, bool use_lerping = true)
 		{
 			card_swipe.Play(0, 0, 0);
 
 			if(this.column!=null)
 				this.column.Remove(this);
-			if(this.parent!=null)
-				this.parent.RemoveChild();
+			if(IsParented)
+				this.CardParent.RemoveCardChild(this);
 			List<Card> column = new_parent.column;
-			this.SetParent(new_parent);
+			this.SetCardParent(new_parent);
 			this.SetColumn(column);
-			new_parent.SetChild(this);
+			new_parent.SetChild(this, use_lerping);
 			this.UpdateState();
 			this.SetDepth(new_parent.Depth + 1);
-			if(child != null)
-				child.Drop(this);
+			if(HasChild) CardChild.Drop(this, false);
 		}
 
 		public virtual void UpdateState(bool atomic = false)
@@ -167,15 +165,16 @@ namespace BeefShenzenIOSolitaire.Entities
 			SetState(.Stacked);
 			if(IsParented)
 			{
-				SetDepth(this.parent.Depth + 1);
-				if(parent.GetCardType() == .Holder)
+				SetDepth(this.CardParent.Depth + 1);
+				if(CardParent.GetCardType() == .Holder)
 				{
-					if(((CardHolder)parent).holder_type == .Temp)
+					let holder = CardParent as CardHolder;
+					if(holder.holder_type == .Temp)
 					{
 						SetState(.Temped);
 					}
 
-					if(((CardHolder)parent).holder_type == .Resolved)
+					if(holder.holder_type == .Resolved)
 					{
 						SetState(.Resolved);
 					}
@@ -185,15 +184,11 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		protected override void OnUpdate()
 		{
-			base.OnUpdate();
-
 			if(is_lerping)
 			{
 				MoveToWorld(Math.Lerp<float2>(_start_position, _desired_position, _lerp_progress));
-				Console.WriteLine("Lerp Progress: {0}", _lerp_progress);
 				if(_lerp_progress >= 1)
 				{
-					MoveToWorld(_desired_position);
 					is_lerping = false;
 					_lerp_progress = 0;
 					return;
@@ -216,11 +211,11 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public bool IsChildNumberOneLess()
 		{
-			if((int)this.card_type > 2 || (int)child.card_type > 2) // Make sure this and it's child are numbered cards
+			if((int)this.card_type > 2 || (int)CardChild.card_type > 2) // Make sure this and it's child are numbered cards
 				return false;
 
-			let num_child = (NumberCard)child;
-			let num_card = (NumberCard)this;
+			let num_child = CardChild as NumberCard;
+			let num_card = this as NumberCard;
 			if(num_child!=null && num_card!=null)
 			{
 				return num_card.card_num - num_child.card_num == 1;
@@ -230,8 +225,8 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public bool IsChildOffSuite()
 		{
-			int ct = (int)card_type;
-			int cct = (int)child.card_type;
+			let ct = (int)card_type;
+			let cct = (int)CardChild.card_type;
 			return cct < 3 && ct != cct;
 		}
 
@@ -249,9 +244,9 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public bool IsChildPickupValid()
 		{
-			if(child==null)
+			if(CardChild==null)
 				return true;
-			else if(child.IsChildPickupValid() && IsChildNumberOneLess() && IsChildOffSuite())
+			else if(CardChild.IsChildPickupValid() && IsChildNumberOneLess() && IsChildOffSuite())
 				return true;
 			return false;
 		}
@@ -295,9 +290,9 @@ namespace BeefShenzenIOSolitaire.Entities
 		public virtual bool SetChild(Card new_child, bool use_lerping = true)
 		{
 			bool child_was_set = false;
-			if(!HasChild())
+			if(!HasChild)
 			{
-				child = new_child;
+				CardChild = new_child;
 				float2 offset = GetChildOffset((Card)new_child);
 				float2 new_pos = this.Position + offset;
 				if(use_lerping)
@@ -307,7 +302,7 @@ namespace BeefShenzenIOSolitaire.Entities
 				new_child.SetDepth(this.Depth + 1);
 				child_was_set = true;
 			}
-			child = new_child;
+			CardChild = new_child;
 			return child_was_set;
 		}
 
@@ -326,19 +321,14 @@ namespace BeefShenzenIOSolitaire.Entities
 			return float2(0, CardManager.card_offset);
 		}
 
-		public void RemoveChild()
-		{
-			child = null;
-		}
-
 		public bool IsNumberCard()
 		{
 			return (int)GetCardType() < 3;
 		}
 
-		public virtual void SetParent(Card new_parent)
+		public virtual void SetCardParent(Card new_parent)
 		{
-			parent = new_parent;
+			CardParent = new_parent;
 		}
 
 		public void SetDepth(float in_depth)
@@ -355,29 +345,10 @@ namespace BeefShenzenIOSolitaire.Entities
 
 		public void MoveToWorld(float2 new_world_pos)
 		{
-			if(IsParented)
-			{
-				if(parent.IsNumberCard() && this.IsNumberCard() && IsDifferentSuite(parent))
-				{
-					var p = parent as NumberCard;
-					var t = this as NumberCard;
-
-					if(p.card_num - t.card_num == 1)
-					{
-						float len = Math.Abs((new_world_pos - Position).Length);
-						if(len > 20)
-						{
-							Console.WriteLine("Len Greater Than: {0}", len);
-							Console.WriteLine("Card: {0}  | Position: {1}  |  NewWorldPos: {2}  |  IsLerping: {3}", card_name, Position, new_world_pos, is_lerping);
-						}
-					}
-				}
-			}
-
 			Position = new_world_pos;
-			if(child != null)
+			if(CardChild != null)
 			{
-				child.MoveToWorld(new_world_pos + float2(0.0f, 36.0f));
+				CardChild.MoveToWorld(Position + float2(0.0f, 36.0f));
 			}
 		}
 
@@ -394,8 +365,8 @@ namespace BeefShenzenIOSolitaire.Entities
 				this.column = null;
 			}
 				
-			this.child = null;
-			this.parent = null;
+			this.CardChild = null;
+			this.CardParent = null;
 		}
 	}
 }

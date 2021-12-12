@@ -212,7 +212,7 @@ namespace BeefShenzenIOSolitaire
 				col.Add(card);
 
 				parent.SetChild(card, false);
-				card.SetParent(parent);
+				card.SetCardParent(parent);
 				
 				card.collision.Added(card);
 				scene.RegisterCollision(card.collision);
@@ -246,7 +246,7 @@ namespace BeefShenzenIOSolitaire
 				for(SpecialCard card in resolved)
 				{
 					card.column.Remove(card);
-					card.parent.RemoveChild();
+					card.Parent.Remove(card);
 				}
 
 				for(SpecialCard card in resolved)
@@ -302,7 +302,7 @@ namespace BeefShenzenIOSolitaire
 
 			bool IsTempHolder(Card card)
 			{
-				if(CardHolder holder = card.parent as CardHolder)
+				if(CardHolder holder = card.CardParent as CardHolder)
 					return holder.holder_type == .Temp;
 				return false;
 			}
@@ -314,7 +314,7 @@ namespace BeefShenzenIOSolitaire
 				{
 					if(IsTempHolder(card))
 					{
-						out_holder = card.parent as CardHolder;
+						out_holder = card.CardParent as CardHolder;
 						return true;
 					}
 				}
@@ -323,7 +323,7 @@ namespace BeefShenzenIOSolitaire
 				{
 					if(CardHolder holder = columns[i][0] as CardHolder)
 					{
-						if(holder.HasChild())
+						if(holder.HasChild)
 						{
 							out_holder = columns[i][0] as CardHolder;
 							return true;

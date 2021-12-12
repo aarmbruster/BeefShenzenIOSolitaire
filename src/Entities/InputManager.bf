@@ -72,10 +72,10 @@ namespace BeefShenzenIOSolitaire.Entities
 					picked_card.MoveToWorld(float2(-10, -10));
 					if(picked_card.IsParented)
 					{
-						picked_card.parent.SetChild(null);
+						picked_card.CardParent.SetChild(null);
 					}
 
-					picked_card.SetParent(null);
+					picked_card.SetCardParent(null);
 					picked_card.column.Remove(picked_card);
 					picked_card.column = null;
 					picked_card.UpdateState();
@@ -101,9 +101,9 @@ namespace BeefShenzenIOSolitaire.Entities
 							
 						}
 					}
-					picked_card.Drop(picked_card.parent);
-					picked_card.LerpToWorld(picked_card.picked_up_pos);
-					picked_entity.OnMouseUp();
+					picked_card.Drop(picked_card.CardParent);
+					//picked_card.LerpToWorld(picked_card.picked_up_pos);
+					//picked_entity.OnMouseUp();
 					picked_entity = null;
 				}
 				
